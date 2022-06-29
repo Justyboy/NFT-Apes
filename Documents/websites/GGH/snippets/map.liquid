@@ -1,0 +1,42 @@
+<div
+{% if api_key != blank %}
+  data-section-type="map" 
+  data-key="{{ api_key }}"
+  data-address = "{{ map_address }}"
+  data-section-id="{{ section_id }}"
+  data-style="{{ style }}"
+  data-zoom="{{ zoom }}"
+{% endif %}
+>
+  <div class="map__background {{ map_height }}">
+    {%- unless map_height == 'original-height' -%}
+      {%- unless background_image == blank -%}
+        <div class="map__background-image {% if background_image == blank %}map__background-image--onboarding{% elsif background_image != blank and map_height != 'original-height' %}lazyload{% endif %}"
+          data-bgset="{% include 'bgset', image: background_image %}"
+          data-sizes="auto"
+          data-parent-fit="cover"></div>
+      {%- endunless -%}
+    {%- else -%}
+      {%- unless background_image == blank -%}
+        {%- include 'responsive-image', image: background_image -%}
+      {%- endunless -%}
+    {%- endunless -%}
+
+    {%- if background_image == blank -%}
+      <div class="map__background-image map__background-image--onboarding placeholder-svg--overlayed">
+        {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg-filled' -}}
+      </div>
+    {%- endif -%}
+
+    {% if api_key != blank %}
+      <div class="map map--{{ section_id }}"></div>
+    {% endif %}
+  </div>
+  
+  {% if location_title != blank or address != blank %}
+  <div class="map__info grid--full" style="background-color:{{card_color}};">
+    <div class="grid__item large--one-half medium-down--one-half map__info_title {{location_title_size}}">{{ location_title }}</div>
+    <div class="grid__item large--one-half medium-down--one-half map__info_container">{{ address }}</div>
+  </div>
+  {% endif %}
+</div>

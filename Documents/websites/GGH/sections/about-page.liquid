@@ -1,0 +1,548 @@
+<!-- /sections/about-page.liquid -->
+{%- capture block_sections -%}
+	{%- include 'block-sections' -%}
+{%- endcapture -%}
+
+<section data-section-type="about-page" data-section-id="{{ section.id }}">
+	{%- if block_sections != blank -%}
+		<div class="page-block-sections">
+			{{ block_sections }}
+		</div>
+	{%- endif -%}
+
+	{%- if page.content != blank or section.settings.show_page_title -%}
+		<div class="about-template">
+			<div class="wrapper wrapper--medium">
+				{%- if section.settings.show_page_title -%}
+					<h1 class="page-title text-center">{{ page.title }}</h1>
+				{%- endif -%}
+				
+				{%- if page.content != blank -%}
+					<div class="rte">
+						{{ page.content }}
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endif -%}
+</section>
+
+{% schema %}
+{
+	"name": "About page",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "show_page_title",
+			"label": "Show page title",
+			"default": false
+		}
+	],
+	"blocks": [
+		{
+			"name": "Banner",
+			"type": "banner",
+			"limit": 2,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "height",
+					"label": "Height",
+					"options": [
+						{
+							"value": "one-hundred",
+							"label": "Full screen"
+						},
+						{
+							"value": "original-height",
+							"label": "Original"
+						},
+						{
+							"value": "big",
+							"label": "750px"
+						},
+						{
+							"value": "normal",
+							"label": "650px"
+						},
+						{
+							"value": "small",
+							"label": "550px"
+						}
+					],
+					"default": "normal"
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Content alignment",
+					"default": "center",
+					"options": [
+						{ "label": "Left", "value": "left" },
+						{ "label": "Center", "value": "center" },
+						{ "label": "Right", "value": "right" },
+						{ "label": "Bottom left", "value": "bottom-left" },
+						{ "label": "Bottom right", "value": "bottom-right" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "range",
+					"id": "overlay_opacity",
+					"label": "Overlay opacity",
+					"step": 5,
+					"max": 95,
+					"min": 0,
+					"unit": "%",
+					"default": 20
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "select",
+					"id": "text_color",
+					"label": "Color",
+					"default": "text-light",
+					"options": [
+						{
+							"value": "text-light",
+							"label": "Light"
+						},
+						{
+							"value": "text-dark",
+							"label": "Dark"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Heading",
+					"default": "Welcome to Palo Alto"
+				},
+				{
+					"type": "range",
+					"id": "heading_font_size",
+					"label": "Heading size",
+					"unit": "px",
+					"step": 4,
+					"min": 40,
+					"max": 64,
+					"default": 48
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Text",
+					"default": "A unique layout with a striking design"
+				},
+				{
+					"type": "range",
+					"id": "text_font_size",
+					"label": "Text size",
+					"unit": "px",
+					"step": 2,
+					"min": 16,
+					"max": 28,
+					"default": 20
+				}
+			]
+		},
+		{
+			"name": "Product feature",
+			"type": "product-feature",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "image_layout",
+					"label": "Image layout",
+					"default": "square",
+					"options": [
+						{ "label": "Square", "value": "square" },
+						{ "label": "Portrait", "value": "portrait" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "image_position",
+					"label": "Image position",
+					"info": "Affects the second image in this section.",
+					"default": "inline",
+					"options": [
+						{ "label": "Inline", "value": "inline" },
+						{ "label": "Overlapping", "value": "overlapping" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Text position",
+					"default": "right",
+					"options": [
+						{ "label": "Right", "value": "right" },
+						{ "label": "Left", "value": "left" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_alignment",
+					"label": "Text alignment",
+					"default": "center",
+					"options": [
+						{ "label": "Center", "value": "center" },
+						{ "label": "Left", "value": "left" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Images"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_1",
+					"label": "Image"
+				},
+				{
+					"type": "url",
+					"id": "image_link_1",
+					"label": "Image link"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_2",
+					"label": "Second image"
+				},
+				{
+					"type": "url",
+					"id": "image_link_2",
+					"label": "Second image link"
+				},
+				{
+					"type": "checkbox",
+					"id": "hide_image_2",
+					"label": "Hide on mobile",
+					"default": false
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "textarea",
+					"id": "heading",
+					"label": "Heading",
+					"default": "This is a heading for a Product feature block."
+				},
+				{
+					"type": "richtext",
+					"id": "description",
+					"label": "Description",
+					"default": "<p>Use this text to share information about the point put forth above. Describe a product, your brand, or what makes you special.</p>"
+				},
+				{
+					"type": "header",
+					"content": "Button"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Text"
+				},
+				{
+					"type": "url",
+					"id": "button_link",
+					"label": "Link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Rich text",
+			"type": "rich-text",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Text position",
+					"default": "center",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "center",
+							"label": "Center"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "logo",
+					"label": "Logo",
+					"info": "Recommended size: 50 x 50 px"
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Our Story"
+				},
+				{
+					"type": "range",
+					"id": "heading_font_size",
+					"label": "Heading size",
+					"unit": "px",
+					"step": 2,
+					"min": 24,
+					"max": 40,
+					"default": 28
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+				},
+				{
+					"type": "range",
+					"id": "text_font_size",
+					"label": "Text size",
+					"unit": "px",
+					"step": 2,
+					"min": 14,
+					"max": 22,
+					"default": 14
+				},
+				{
+					"type": "header",
+					"content": "Buttons"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"default": "Learn More"
+				},
+				{
+					"type": "url",
+					"id": "button_url",
+					"label": "Button link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Button style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				},
+				{
+					"type": "text",
+					"id": "secondary_button_text",
+					"label": "Second button text"
+				},
+				{
+					"type": "url",
+					"id": "secondary_button_url",
+					"label": "Second button link"
+				},
+				{
+					"type": "select",
+					"id": "secondary_button_style",
+					"label": "Second button style",
+					"default": "secondary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Image with text",
+			"type": "image-with-text",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "section_height",
+					"label": "Height",
+					"default": "sixty-fifty-height-hero",
+					"options": [
+						{
+							"value": "one-hundred-height-hero",
+							"label": "Full screen"
+						},
+						{
+							"value": "seven-fifty-height-hero",
+							"label": "750px"
+						},
+						{
+							"value": "sixty-fifty-height-hero",
+							"label": "650px"
+						},
+						{
+							"value": "five-fifty-height-hero ",
+							"label": "550px"
+						},
+						{
+							"value": "four-fifty-height-hero",
+							"label": "450px"
+						}
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Block position",
+					"default": "left",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "checkbox",
+					"id": "image_background",
+					"label": "Set image as a background",
+					"default": false
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Our Story"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+				},
+				{
+					"type": "header",
+					"content": "Button"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Text",
+					"default": "Learn More"
+				},
+				{
+					"type": "url",
+					"id": "button_url",
+					"label": "Link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Video button"
+				},
+				{
+					"type": "video_url",
+					"id": "video_url",
+					"label": "Link",
+					"accept": ["youtube", "vimeo"],
+					"default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+				}
+			]
+		}
+	]
+}
+{% endschema %} 

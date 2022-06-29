@@ -1,0 +1,281 @@
+<!-- /sections/featured-image.liquid -->
+{%- assign heading_font_size = section.settings.heading_font_size -%}
+{%- assign text_font_size = section.settings.text_font_size -%}
+{%- if section.settings.enable_parallax -%}
+  {%- assign bg_attachment = "ba-fixed" -%}
+{%- endif -%}
+
+{%- assign image = section.settings.image -%}
+{%- assign image_position = section.settings.image_position -%}
+{%- assign image_height = section.settings.image_height -%}
+{%- assign title = section.settings.title -%}
+{%- assign subheading = section.settings.subheading -%}
+{%- assign button_text = section.settings.button_text -%}
+{%- assign button_link = section.settings.button_link -%}
+{%- assign button_style = section.settings.button_style -%}
+{%- if button_link != blank -%}
+  {%- assign button_link =  button_link  -%}
+{%- else -%}
+  {%- assign button_link = "#!" -%}
+{%- endif -%}
+{%- assign overlay_opacity = section.settings.overlay_opacity | times: 0.01 -%}
+{%- assign text_position = section.settings.text_position -%}
+
+{%- capture featured_content -%}
+  <div class="featured-image-section-inner js-section-content">
+    <div class="wrapper wrapper--small">
+      {%- if title != blank -%}
+        <h1 class="slide__heading main-heading size--{{ heading_font_size }} {{ section.settings.text_color }}">{{ title | escape }}</h1>
+      {%- endif -%}
+      {%- if subheading != blank -%}
+        <h2 class="slide__caption main-subheading size--{{ text_font_size }} {{ section.settings.text_color }}">{{ subheading | escape }}</h2>
+      {%- endif -%}
+      {%- if button_text != blank -%}
+        <a class="btn btn--{{ button_style }} call-to-action" href="{{ button_link }}">{{ button_text | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endcapture -%}
+
+<div class="featured-image-section featured-image-section--{{ section.id }} {{ image_height }} {%- if image == blank -%}featured-image-section--placeholder{% endif %} {{ text_position }} js-section-container"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-image"
+  data-aspect-ratio="{{ image.aspect_ratio | default: 1.66 }}"
+  id="featured-image--{{ section.id }}">
+
+  {%- unless image == blank -%}
+    <div
+        class="featured-image__bg {{ bg_attachment }} {{ image_position }} lazyload"
+        data-bgset="{% include 'bgset', image: image %}"
+        data-sizes="auto"
+        data-parent-fit="cover"
+    ></div>
+    <noscript>
+      <div class="featured-image__bg {{ bg_attachment }} {{ image_position }}" style="background-image: url('{{ image | img_url:'2048x' }}');"></div>
+    </noscript>
+  {%- else -%}
+    <div class="featured-image__bg featured-image__bg--placeholder {{ bg_attachment }} {{ image_position }}">
+      {{- 'image' | placeholder_svg_tag: 'placeholder-svg-filled' -}}
+    </div>
+  {%- endunless -%}
+
+  <div class="overlay" style="opacity:{{ overlay_opacity }};"></div>
+
+  {{- featured_content -}}
+</div>
+
+{% schema %}
+  {
+  "name": "Featured image",
+  "class": "full-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Height",
+      "default": "one-hundred-height-hero",
+      "options": [
+      {
+          "value": "one-hundred-height-hero",
+          "label": "Full screen"
+        },
+        {
+          "value": "original-height",
+          "label": "Original"
+        },
+        {
+          "value": "seven-fifty-height-hero",
+          "label": "750px"
+        },
+        {
+          "value": "sixty-fifty-height-hero",
+          "label": "650px"
+        },
+        {
+          "value": "five-fifty-height-hero",
+          "label": "550px"
+        },
+        {
+          "value": "four-fifty-height-hero",
+          "label": "450px"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Content alignment",
+      "default": "center-center",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "center-center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable parallax",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "label": "Position",
+      "id": "image_position",
+      "default": "bg-pos-center-center",
+      "options": [
+        {
+          "value": "bg-pos-top-center",
+          "label": "Top"
+        },
+        {
+          "value": "bg-pos-right-center",
+          "label": "Right"
+        },
+        {
+          "value": "bg-pos-center-center",
+          "label": "Center"
+        },
+        {
+          "value": "bg-pos-left-center",
+          "label": "Left"
+        },
+        {
+          "value": "bg-pos-bottom-center",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Color",
+      "default": "text-light",
+      "options": [
+        {
+          "value": "text-light",
+          "label": "Light"
+        },
+        {
+          "value": "text-dark",
+          "label": "Dark"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Welcome to Palo Alto"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading size",
+      "unit": "px",
+      "step": 4,
+      "min": 40,
+      "max": 64,
+      "default": 48
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Describe in a few words your special products, collection, or brand."
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text size",
+      "unit": "px",
+      "step": 2,
+      "min": 16,
+      "max": 28,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Style",
+      "default": "primary",
+      "options": [
+        { "label": "Primary", "value": "primary" },
+        { "label": "Secondary", "value": "secondary" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured image",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

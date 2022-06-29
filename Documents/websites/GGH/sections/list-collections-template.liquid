@@ -1,0 +1,154 @@
+<!-- /templates/list-collections-template.liquid -->
+{%- assign bg_color = section.settings.bg_color | default: '#fafafa' -%}
+{%- assign heading_font_size = section.settings.heading_font_size -%}
+{%- assign layout = section.settings.layout -%}
+{%- assign columns = section.settings.columns -%}
+{%- assign text_color = section.settings.text_color -%}
+{%- assign text_position = section.settings.text_position -%}
+<style>
+  .site-header,
+  .collection-header--no-image { background: {{ bg_color }}; }
+  #ListCollections[data-section-id="{{ section.id }}"] .list-collections__slide-image { padding-top: {{ section.settings.image_aspect_ratio | times: 100 | append: '%' }}; }
+</style>
+
+<section data-section-type="list-collections" data-section-id="{{ section.id }}" id="ListCollections">
+  {% comment %} List Collections Header {% endcomment %}
+  <header class="collection-header collection-header--no-image">
+    <div class="wrapper">
+      <div class="large--one-whole text-center">
+        <h1 class="section-header__title collection-title size--{{ heading_font_size }}">{{ 'collections.general.list_collections' | t }}</h1>
+        <span class="spacer-line"></span>
+      </div>
+    </div>
+  </header>
+  
+  {% comment %} Loop collections {% endcomment %}
+  <div class="collection-list__items">
+    <div class="wrapper">
+      <div class="collection-grid{% if layout == 'carousel' %} collection-grid--slider{% endif %}">
+        <div class="{% if layout == 'carousel' %}list-collections__slider js-list-collections__slider{% else %}list-collections__grid{% endif %} {{ text_color }}" data-columns="{{ columns }}" data-text-position="{{ text_position }}">
+          {% for collection in collections %}
+           {% unless collection.handle == 'frontpage' %}
+              <div class="list-collections__slide {% if collection == empty %}list-collections__slide--onboarding{% endif %}">
+                {% include 'collection-grid-item' %}
+              </div>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Collections list",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Collections per row",
+        "default": 4,
+        "min": 1,
+        "max": 4,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "heading_font_size",
+        "label": "Heading size",
+        "unit": "px",
+        "step": 4,
+        "min": 40,
+        "max": 64,
+        "default": 48
+      },
+      {
+        "type": "header",
+        "content": "Items"
+      },
+      {
+        "type": "range",
+        "id": "image_aspect_ratio",
+        "label": "Image aspect ratio",
+        "min": 0.5,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": ":1",
+        "default": 1.2
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text position",
+        "default": "bottom_left",
+        "options": [
+          {
+            "value": "bottom_left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "text-light",
+        "options": [
+          {
+            "value": "text-light",
+            "label": "Light"
+          },
+          {
+            "value": "text-dark",
+            "label": "Dark"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "label": "Overlay opacity",
+        "min": 0,
+        "max": 95,
+        "step": 5,
+        "unit": "%",
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background",
+        "default": "#fafafa"
+      }
+    ]
+  }
+{% endschema %}

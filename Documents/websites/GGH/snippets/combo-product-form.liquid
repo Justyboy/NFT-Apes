@@ -1,0 +1,251 @@
+<!-- /snippets/product-form.liquid -->
+
+{%- assign variants_count = product.variants.size -%}
+{%- assign enable_quickview_payment_button = settings.enable_payment_button -%}
+
+{%- comment -%}
+Check if the product is on sale and set a variable to be used below.
+{%- endcomment -%}
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+    {%- assign on_sale = true -%}
+{%- endif -%}
+
+{%- comment -%}
+Check if the product is sold out and set a variable to be used below.
+{%- endcomment -%}
+{%- assign sold_out = true -%}
+{%- if product.available -%}
+    {%- assign sold_out = false -%}
+{%- endif -%}
+
+{%- comment -%}
+#addToCartForm is a selector for the Ajax Cart plugin
+{%- endcomment -%}
+
+
+
+{%- assign productFormID = "AddToCartForm--" | append: section.id -%}
+{%- form 'product', product, data-productid: product.id, class: "product-form product-form--is-loading", id: productFormID, data-swatches: enable_swatches, data-enable-button: enable_payment_button, data-enable-quickview-button: enable_quickview_payment_button -%}
+
+    {%- comment -%} id
+    Show product title only as Featured product
+    {%- endcomment -%}
+    {%- if template == 'index' -%}
+        <h1 class="featured-product-title product-title">
+            <a href="{{ product.url | within: collection }}">{{ product.title | truncate: 50 }}</a>
+        </h1>
+        {%- if enable_reviews or settings.enable_yotpo and settings.yotpo_ID != '' -%}
+          <div class="product__badge">
+            {%- if settings.enable_yotpo and settings.yotpo_ID != '' -%}
+              <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
+            {%- elsif enable_reviews -%}
+              <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%}
+    Prices
+    {%- endcomment -%}
+    <h2 class="product-price" itemprop="price">
+        <span id="ProductPrice">{{ current_variant.price | money }}</span>
+        <span id="ComparePrice">
+            {%- if current_variant.compare_at_price -%}
+                <s class="reduced-price">{{ current_variant.compare_at_price | money }}</s>
+            {%- endif -%}
+        </span>
+
+        <span id="UnitPrice" class="unit-price">
+            {%- if current_variant.unit_price_measurement -%}
+                {{ current_variant.unit_price | money }}
+                {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                    {{- current_variant.unit_price_measurement.reference_value -}}
+                {%- endif -%}
+                {{ current_variant.unit_price_measurement.reference_unit }}
+            {%- endif -%}
+        </span>
+    </h2>
+
+    {%- comment -%}
+    Variants
+    {%- endcomment -%}
+    <div class="variants-wrapper">
+        {%- if variants_count >= 1 -%}
+            {%- if enable_swatches -%}
+                {%- include 'swatch' with 'Color' -%}
+      		    {%- include 'swatch' with 'Fragrance' -%}
+      		    {%- include 'swatch' with 'Size' -%}
+     			 {%- include 'swatch' with 'Sampler Kit' -%}
+            {%- endif -%}
+            <select name="id" data-productid="{{ product.id }}" id="productSelect--{{ section.id }}"
+                    class="product-single__variants">
+                {%- for variant in product.variants -%}
+                    {%- if variant.available -%}
+                        <option  {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %}
+                                data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }}
+                            - {{ variant.price | money_with_currency }}</option>
+                    {%- else -%}
+                        <option disabled="disabled" data-variant="{{variant.id}}">
+                            {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                    {%- endif -%}
+                {%- endfor -%}
+            </select>
+        {%- else -%}
+            <input name="id" data-productid="{{ product.id }}" type="hidden" value="{{ current_variant.id }}">
+        {%- endif -%}
+    
+   
+
+
+        {%- unless section.settings.hide_quantity -%}
+            {%- comment -%}
+            Quantity Selector
+            {%- endcomment -%}
+      {% comment %}
+            <div class="qtydiv">
+                <label for="Quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
+              	<div class="qty-input-grp">
+                  <span class="qty-control minus">-</span>
+               	  <input type="text" id="Quantity" name="quantity" value="1" min="1" pattern="[0-9]*" class="quantity-selector quantity-input">
+                  <span class="qty-control plus">+</span>
+              	</div>
+            </div>
+      {% endcomment %}
+        {%- else -%}
+            <input type="hidden" name="quantity" value="1">
+        {%- endunless -%}
+    </div>
+
+    {%- comment -%}
+    Buttons
+    {%- endcomment -%}
+
+
+        <!-- Recharge snippet -->
+<style>
+  label > * { pointer-events: none; }
+</style>
+  <div class="rc-widget-injection-parent" style="display: initial;"></div> 
+  
+      <!-- Begin ReCharge code -->
+      {% unless product.tags contains 'nosub' %}
+{% if product.available %}{% include 'subscription-product' %}{% endif %}
+<!-- End ReCharge code -->
+
+<!-- Recharge hide text before button 
+ -->
+<style> 
+  .rc-selling-plans__label{ 
+   display: none;  
+  }
+  
+  .swatch.size{
+   margin-bottom: 0px;  
+  }
+  
+  button#AddToCart--product-template{
+   margin-top: 25px; 
+  }
+  
+  .product-price{
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .qtydiv {
+    padding-top: 25px;
+  }
+</style>
+   {% endunless %}
+{% comment %}
+    <button type="submit" name="add" id="AddToCart--{{ section.id }}" class="btn btn--submit {% if sold_out %}disabled{% endif %}" {% if sold_out %}disabled{% endif %}>
+        <span id="AddToCartText">
+            {%- if sold_out -%}
+                {{- 'products.product.sold_out' | t -}}
+            {%- else -%}
+                {{- 'products.product.add_to_cart' | t -}}
+            {%- endif -%}
+        </span>
+        {%- include 'icon-loading' -%}
+    </button>
+{% endcomment %}
+<span style="font-size: 14px;">30-Day Satisfaction Guarantee | Free Shipping over $25</span>
+
+<div class="trust_container mobile-text">
+
+  <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/USA.jpg?v=1613551987" alt="USA badge">
+  </div>
+  <div class="trust_text">
+    <span>Made In The USA</span>
+  </div>
+  </div>
+  
+    <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/biodegradable_6271a005-8db9-49f8-8bbd-9604f57eca59.jpg?v=1613552029" alt="USA badge">
+  </div>
+  <div class="trust_text">
+    <span>Naturally-Derived
+</span>
+  </div>
+  </div>
+  
+    <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/crueltyFree.jpg?v=1613551915" alt="Cruelty Free badge">
+  </div>
+  <div class="trust_text">
+    <span>Cruelty Free
+</span>
+  </div>
+  </div>
+  
+</div>
+         
+
+
+    <button id="BIS_trigger" class="btn" {% if product.available %} style="display: none;" {% endif %}>
+        Notify me when it's back
+    </button>
+
+{%- if enable_payment_button or enable_quickview_payment_button -%}
+<div data-payment-button="{{ enable_payment_button }}" data-quickview-payment-button="{{ enable_quickview_payment_button }}">
+  {% unless shop.metafields.subscriptions.subscription_active and product.metafields.subscriptions.shipping_interval_frequency %}
+  {{ form | payment_button }}
+  {% endunless %}
+</div>
+{%- endif -%}
+
+    {% unless product.id == 6665164685414 %}
+
+
+
+    {%- comment -%}
+    Product Description and product tabs
+    {%- endcomment -%}
+
+    <div class="product-description rte" itemprop="description">
+        <p> {{ product.description }}</p>
+    </div>
+
+
+    {%- if template != 'index' -%}
+        {%- include 'product-tabs' -%}
+    {%- endif -%}
+
+    {%- comment -%}
+    Social Icons
+    {%- endcomment -%}
+    <div class="featured-product-social-wrapper">
+        {%- if section.settings.enable_social_sharing_products -%}
+            {%- include 'social-sharing' -%}
+        {%- endif -%}
+    </div>
+
+    {% endunless %}
+{%- endform -%}

@@ -1,0 +1,7 @@
+{% comment %} Tags {% endcomment %}
+    {%- if on_sale -%}
+      <div class="tag tag--{{ settings.product_badge_style }}"><span>{{ 'products.product.on_sale_html' | t }}</span></div>
+    {%- endif -%}
+    {%- if sold_out -%}
+      <div class="tag soldout-sticker tag--{{ settings.product_badge_style }}"><span>{{ 'products.product.sold_out_html' | t }}</span></div>
+    {%- endif -%}

@@ -1,0 +1,902 @@
+<!-- /sections/product-template.liquid -->
+{%- assign enable_reviews = settings.enable_reviews -%}
+{%- assign enable_swatches = settings.color_swatches -%}
+{%- assign enable_video_looping = section.settings.enable_video_looping -%}
+{%- assign enable_payment_button = section.settings.enable_payment_button -%}
+{%- assign tab_1 = section.settings.page_tab_1 -%}
+{%- assign tab_2 = section.settings.page_tab_2 -%}
+{%- assign tab_3 = section.settings.page_tab_3 -%}
+{%- assign image_gallery = section.settings.image_gallery -%}
+{%- assign image_gallery_class = '' -%}
+{%- if image_gallery == 'zoom' -%}
+	{%- assign image_gallery_class = 'hover-zoom' -%}
+{%- elsif image_gallery == 'lightbox' -%}
+	{%- assign image_gallery_class = 'mfp-zoom-in-cur' -%}
+{%- endif -%}
+{%- comment -%}
+Get first variant, or deep linked one
+{%- endcomment -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_media = current_variant.featured_media | default: product.featured_media -%}
+{%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+{%- assign featured_media_id = featured_media.id -%}
+{%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+
+{% for tag in product.tags %}
+	{% if tag contains "tab1" %}
+		{% assign tab_1 = tag | split:':' %}
+		{% assign tab_1 = tab_1[1] %}
+
+	{% elsif tag contains "tab2" %}
+		{% assign tab_2 = tag | split: ":" %}
+		{% assign tab_2 = tab_2[1] %}
+	{% elsif tag contains "tab3" %}
+		{% assign tab_3 = tag | split: ":" %}
+		{% assign tab_3 = tab_3[1] %}
+	{% elsif tag contains "ingredients:" %}
+		{% assign ingredients = tag | remove_first: "ingredients:" %}
+		
+	{% endif %}
+{% endfor %}
+
+
+<style>.template-product { background-color: {{ section.settings.bg_color | default: '#fff' }}; }</style>
+<section {{ tab_1 }} itemscope itemtype="http://schema.org/Product" data-section-type="product-template" data-section-id="{{ section.id }}" data-reviews="{{ enable_reviews }}" data-swatches="{{ enable_swatches }}" class="product-single wrapper product--{{ section.id }}">
+	<meta itemprop="name" content="{{ product.title }}">
+	<meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+	<meta itemprop="image" content="{{ product.featured_media.preview_image.src | img_url: '1200x1200' }}">
+
+	<div class="grid--full">
+		<div class="grid__item">
+
+			{%- if section.settings.show_breadcrumbs -%}
+				{%- include 'breadcrumbs' -%}
+			{%- endif -%}
+          
+           {%- if enable_reviews -%}
+          <div class="product__badge hide_desktop">
+            <span class=" stamped-product-reviews-badge" data-product-sku="{{ product.handle }}" data-id="{{ product.id }}" data-product-type="{{product.type}}" data-product-title="{{product.title}}"  style="display:block;"></span>
+          </div>
+        {%- endif -%}
+
+			<div class="grid">
+				<!-- Product media -->
+				<div class="grid__item large--one-half product-single__media-wrapper"
+					id="ProductPhoto"
+					data-gallery="{{ image_gallery }}"
+					data-product-single-media-group>
+					<div class="product-single__media-slider{% if product.media.size == 1 %} product-single__media-slider--single{% endif %}" data-product-single-media-slider>
+						{%- comment -%} Show Featured media first {%- endcomment -%}
+						{%- for media in product.media -%}
+							{%- if media.id == featured_media_id -%}
+       			{%- include 'media', media: media, featured_media: featured_media -%}
+							{%- endif -%}
+						{%- endfor -%}
+
+						{%- comment -%} Loop product media thumbnails {%- endcomment -%}
+						{%- for media in product.media -%}
+                      
+      			{%- if media.id != featured_media_id -%}
+								{%- include 'media', media: media, featured_media: featured_media -%}
+							{%- endif -%}
+						{%- endfor -%}
+					</div>
+
+					{%- if first_3d_model -%}
+						<button
+							aria-label="{{ 'products.product.view_in_space_label' | t }}"
+							class="btn btn--ar product-single__view-in-space"
+							data-shopify-xr
+							data-shopify-model3d-id="{{ first_3d_model.id }}"
+							data-shopify-title="{{ product.title }}"
+							data-shopify-xr-hidden
+						>
+							{%- include 'icon-media-model' -%}
+							<span class='product-single__view-in-space-text'>{{ 'products.product.view_in_space' | t }}</span>
+						</button>
+					{%- endif -%}
+					
+					<!-- Product Thumbnails -->
+					{%- if product.media.size > 1 -%}
+						<div id="ProductThumbs">
+							<div class="product-single__thumbnails" data-product-single-media-thumbs>
+								{%- comment -%} Show Featured media thumbnail first {%- endcomment -%}
+								{%- for media in product.media -%}
+									{%- if media.id == featured_media_id -%}
+										{%- include 'media-thumb', media: media, featured_media: featured_media -%}
+									{%- endif -%}
+								{%- endfor -%}
+
+								{%- comment -%} Loop product media thumbnails {%- endcomment -%}
+								{%- for media in product.media -%}
+									{%- if media.id != featured_media_id -%}
+										{%- include 'media-thumb', media: media, featured_media: featured_media -%}
+									{%- endif -%}
+								{%- endfor -%}
+							</div>
+						</div>
+					{%- endif -%}
+				
+<div class="trust_container full-text">
+
+  <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/USA.jpg?v=1613551987" alt="USA badge">
+  </div>
+  <div class="trust_text">
+    <span>Made In The USA</span>
+  </div>
+  </div>
+  
+    <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/biodegradable_6271a005-8db9-49f8-8bbd-9604f57eca59.jpg?v=1613552029" alt="USA badge">
+  </div>
+  <div class="trust_text">
+    <span>Naturally-Derived
+</span>
+  </div>
+  </div>
+  
+    <div class="trust_icon">
+  <div class="trust_img">
+    <img src="https://cdn.shopify.com/s/files/1/0080/5679/9347/files/crueltyFree.jpg?v=1613551915" alt="Cruelty Free badge">
+  </div>
+  <div class="trust_text">
+    <span>Cruelty Free
+</span>
+  </div>
+  </div>
+  
+</div>
+            </div>  
+      
+				<!-- Product Description -->
+				<div class="grid__item large--one-half product-description-wrapper {% if section.settings.text_alignment == 'text-center' %}text-center{% else %}text-left{% endif %}">
+					{%- if section.settings.enable_vendor -%}
+						<p class="product-vendor">{{ product.vendor }}</p>
+					{%- endif -%}
+
+					<h1 class="product-title" itemprop="name">{{ product.title }}</h1>
+					{%- if enable_reviews or settings.enable_yotpo and settings.yotpo_ID != '' -%}
+		              <div class="product__badge hide_mobile">
+		                {%- if settings.enable_yotpo and settings.yotpo_ID != '' -%}
+		                  <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
+		                {%- elsif enable_reviews -%}
+		                  <span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ product.id }}" data-product-sku="{{ product.handle }}" data-product-type="{{product.type}}" data-product-title="{{product.title}}"  style="display: inline-block;" >{{ product.metafields.stamped.badge }}</span>
+		                {%- endif -%}
+		              </div>
+		            {%- endif -%}
+
+					<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" data-product-form-wrapper>
+						<meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+						<link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+						<!-- Product Form Snippet -->
+						{%- include 'product-form' -%}
+					</div>
+				</div>
+			</div>
+			{% if product.id == 6665164685414 %}
+			{% comment %}https://grab-green-home.myshopify.com/admin/products/6665164685414 : Stoneworks Laundry Detergent Pods | New {% endcomment %}
+			<div class="grid">
+				<div class="grid__item product-description-wrapper {% if section.settings.text_alignment == 'text-center' %}text-center{% else %}text-left{% endif %}">
+					<div class="product-description rte" itemprop="description">
+						<p> {{ product.description }}</p>
+					</div>
+
+					{%- if template != 'index' -%}
+						{%- include 'product-tabs' -%}
+					{%- endif -%}
+
+					{%- comment -%}
+          Social Icons
+          {%- endcomment -%}
+					<div class="featured-product-social-wrapper">
+						{%- if section.settings.enable_social_sharing_products -%}
+							{%- include 'social-sharing' -%}
+						{%- endif -%}
+					</div>
+
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+<script type="application/json" id="ProductJson-{{ section.id }}">{{ product | json }}</script>
+<script type="application/json" id="ModelJson-{{ section.id }}">{{ product.media | where: 'media_type', 'model' | json }}</script>
+
+<script type="text/javascript" async>
+	document.addEventListener('DOMContentLoaded', function(event) {
+		window.product = {{ product | json }};
+		window.product.money_format = "{{ shop.money_format }}";
+		window.product.add_label = {% if product.options.size == 1 %}true{% else %}false{% endif %};
+		window.product.label = "{{ product.options.first | escape }}";
+		window.selectCallback = PaloAlto.onVariantSelected;
+	});
+</script>
+
+{%- include 'block-sections' -%}
+
+
+<script>
+  $(document).ready(function(){
+    var variant_description = [];
+    var variant_tabdescription = [];
+    var variant_tab2description = [];
+    var variant_tab3description = [];
+
+
+    {% for variant in product.variants %}
+    var description = `{{ variant.metafields.info.description }}`;
+    var tabdescription = `{{ variant.metafields.tab.tab1description }}`;
+    var tab2description = `{{ variant.metafields.tab.tab2description }}`;
+    var tab3description = `{{ variant.metafields.tab.tab3description }}`;
+
+    var id = {{variant.id}};
+    variant_description[id] = description;
+    variant_tabdescription[id] = tabdescription;
+    variant_tab2description[id] = tab2description;
+    variant_tab3description[id] = tab3description;
+
+    {% endfor %}
+
+                        
+    $(document).on('variant:selectedChange', function(event,data){
+      console.log('variant event: ', event);
+      console.log('variant change: ', data);
+      var variant = data;
+      var variant_id = variant.id;
+      var original_description = $('.product-description.rte').html();
+      var original_tabdescription = $('.tab1').html();
+      var original_tab2description = $('.tab2').html();
+      var original_tab3description = $('.tab3').html();
+
+
+
+      if(variant_description[variant_id] !== null && variant_description[variant_id] !== undefined && variant_description[variant_id] !=
+         "" && variant_description[variant_id] != "sample" ){
+     
+        $('.product-description.rte').html(variant_description[variant_id]);
+               $('.tab1').html(variant_tabdescription[variant_id]);
+               $('.tab2').html(variant_tab2description[variant_id]);
+               $('.tab3').html(variant_tab3description[variant_id]);
+
+
+      }
+           
+
+        
+               
+    });
+  });
+</script>
+
+
+
+
+{% schema %}
+{
+	"name": "Product pages",
+	"settings": [
+	    {
+			"type": "header",
+			"content": "Colors"
+	    },
+	    {
+			"type": "color",
+			"id": "bg_color",
+			"label": "Background",
+			"default": "#fff"
+	    },
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_breadcrumbs",
+			"label": "Show breadcrumbs",
+			"default": true
+		},
+		{
+			"type": "select",
+			"id": "image_gallery",
+			"label": "Image gallery",
+			"options": [
+				{
+					"value": "none",
+					"label": "None"
+				},
+				{
+					"value": "zoom",
+					"label": "Hover to zoom"
+				},
+				{
+					"value": "lightbox",
+					"label": "Lightbox"
+				}
+			],
+			"default": "zoom"
+		},
+		{
+			"type": "select",
+			"label": "Text alignment",
+			"id": "text_alignment",
+			"options": [
+				{
+					"value": "text-left",
+					"label": "Left"
+				},
+				{
+					"value": "text-center",
+					"label": "Center"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_social_sharing_products",
+			"label": "Show social sharing buttons",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_vendor",
+			"label": "Show vendor",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "hide_quantity",
+			"label": "Hide quantity",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_payment_button",
+			"label": "Show dynamic checkout button",
+			"info": "Lets customers check out directly using a familiar payment method. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Tabs",
+			"info": "You have the option to enable three extra tabs for more information on your product."
+		},
+		{
+			"type": "page",
+			"id": "page_tab_1",
+			"label": "Tab one"
+		},
+		{
+			"type": "page",
+			"id": "page_tab_2",
+			"label": "Tab two"
+		},
+		{
+			"type": "page",
+			"id": "page_tab_3",
+			"label": "Tab three"
+		},
+		{
+			"type": "header",
+			"content": "Media",
+			"info": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_video_looping",
+			"label": "Enable video looping",
+			"default": false
+		}
+	],
+	"blocks": [
+		{
+			"name": "Banner",
+			"type": "banner",
+			"limit": 2,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "height",
+					"label": "Height",
+					"options": [
+						{
+							"value": "one-hundred",
+							"label": "Full screen"
+						},
+						{
+							"value": "original-height",
+							"label": "Original"
+						},
+						{
+							"value": "big",
+							"label": "750px"
+						},
+						{
+							"value": "normal",
+							"label": "650px"
+						},
+						{
+							"value": "small",
+							"label": "550px"
+						}
+					],
+					"default": "normal"
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Content alignment",
+					"default": "center",
+					"options": [
+						{ "label": "Left", "value": "left" },
+						{ "label": "Center", "value": "center" },
+						{ "label": "Right", "value": "right" },
+						{ "label": "Bottom left", "value": "bottom-left" },
+						{ "label": "Bottom right", "value": "bottom-right" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "range",
+					"id": "overlay_opacity",
+					"label": "Overlay opacity",
+					"step": 5,
+					"max": 95,
+					"min": 0,
+					"unit": "%",
+					"default": 20
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "select",
+					"id": "text_color",
+					"label": "Color",
+					"default": "text-light",
+					"options": [
+						{
+							"value": "text-light",
+							"label": "Light"
+						},
+						{
+							"value": "text-dark",
+							"label": "Dark"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Heading",
+					"default": "Welcome to Palo Alto"
+				},
+				{
+					"type": "range",
+					"id": "heading_font_size",
+					"label": "Heading size",
+					"unit": "px",
+					"step": 4,
+					"min": 40,
+					"max": 64,
+					"default": 48
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Text",
+					"default": "A unique layout with a striking design"
+				},
+				{
+					"type": "range",
+					"id": "text_font_size",
+					"label": "Text size",
+					"unit": "px",
+					"step": 2,
+					"min": 16,
+					"max": 28,
+					"default": 20
+				}
+			]
+		},
+		{
+			"name": "Product feature",
+			"type": "product-feature",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "image_layout",
+					"label": "Image layout",
+					"default": "square",
+					"options": [
+						{ "label": "Square", "value": "square" },
+						{ "label": "Portrait", "value": "portrait" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "image_position",
+					"label": "Image position",
+					"info": "Affects the second image in this section.",
+					"default": "inline",
+					"options": [
+						{ "label": "Inline", "value": "inline" },
+						{ "label": "Overlapping", "value": "overlapping" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Text position",
+					"default": "right",
+					"options": [
+						{ "label": "Right", "value": "right" },
+						{ "label": "Left", "value": "left" }
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_alignment",
+					"label": "Text alignment",
+					"default": "center",
+					"options": [
+						{ "label": "Center", "value": "center" },
+						{ "label": "Left", "value": "left" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Images"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_1",
+					"label": "Image"
+				},
+				{
+					"type": "url",
+					"id": "image_link_1",
+					"label": "Image link"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_2",
+					"label": "Second image"
+				},
+				{
+					"type": "url",
+					"id": "image_link_2",
+					"label": "Second image link"
+				},
+				{
+					"type": "checkbox",
+					"id": "hide_image_2",
+					"label": "Hide on mobile",
+					"default": false
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "textarea",
+					"id": "heading",
+					"label": "Heading",
+					"default": "This is a heading for a Product feature block."
+				},
+				{
+					"type": "richtext",
+					"id": "description",
+					"label": "Description",
+					"default": "<p>Use this text to share information about the point put forth above. Describe a product, your brand, or what makes you special.</p>"
+				},
+				{
+					"type": "header",
+					"content": "Button"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Text"
+				},
+				{
+					"type": "url",
+					"id": "button_link",
+					"label": "Link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Rich text",
+			"type": "rich-text",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Text position",
+					"default": "center",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "center",
+							"label": "Center"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "logo",
+					"label": "Logo",
+					"info": "Recommended size: 50 x 50 px"
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Our Story"
+				},
+				{
+					"type": "range",
+					"id": "heading_font_size",
+					"label": "Heading size",
+					"unit": "px",
+					"step": 2,
+					"min": 24,
+					"max": 40,
+					"default": 28
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+				},
+				{
+					"type": "range",
+					"id": "text_font_size",
+					"label": "Text size",
+					"unit": "px",
+					"step": 2,
+					"min": 14,
+					"max": 22,
+					"default": 14
+				},
+				{
+					"type": "header",
+					"content": "Buttons"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button text",
+					"default": "Learn More"
+				},
+				{
+					"type": "url",
+					"id": "button_url",
+					"label": "Button link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Button style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				},
+				{
+					"type": "text",
+					"id": "secondary_button_text",
+					"label": "Second button text"
+				},
+				{
+					"type": "url",
+					"id": "secondary_button_url",
+					"label": "Second button link"
+				},
+				{
+					"type": "select",
+					"id": "secondary_button_style",
+					"label": "Second button style",
+					"default": "secondary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Image with text",
+			"type": "image-with-text",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "section_height",
+					"label": "Height",
+					"default": "sixty-fifty-height-hero",
+					"options": [
+						{
+							"value": "one-hundred-height-hero",
+							"label": "Full screen"
+						},
+						{
+							"value": "seven-fifty-height-hero",
+							"label": "750px"
+						},
+						{
+							"value": "sixty-fifty-height-hero",
+							"label": "650px"
+						},
+						{
+							"value": "five-fifty-height-hero ",
+							"label": "550px"
+						},
+						{
+							"value": "four-fifty-height-hero",
+							"label": "450px"
+						}
+					]
+				},
+				{
+					"type": "select",
+					"id": "text_position",
+					"label": "Block position",
+					"default": "left",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "right",
+							"label": "Right"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "checkbox",
+					"id": "image_background",
+					"label": "Set image as a background",
+					"default": false
+				},
+				{
+					"type": "header",
+					"content": "Text"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Our Story"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+				},
+				{
+					"type": "header",
+					"content": "Button"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Text",
+					"default": "Learn More"
+				},
+				{
+					"type": "url",
+					"id": "button_url",
+					"label": "Link"
+				},
+				{
+					"type": "select",
+					"id": "button_style",
+					"label": "Style",
+					"default": "primary",
+					"options": [
+						{ "label": "Primary", "value": "primary" },
+						{ "label": "Secondary", "value": "secondary" }
+					]
+				},
+				{
+					"type": "header",
+					"content": "Video button"
+				},
+				{
+					"type": "video_url",
+					"id": "video_url",
+					"label": "Link",
+					"accept": ["youtube", "vimeo"],
+					"default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+
+
+{%- if tab_1 != blank or tab_2 != blank or tab_3 != blank or enable_reviews or settings.enable_yotpo and settings.yotpo_ID != '' -%}
+  <div class="product-tabs js-product-tabs">
+    
+      <div class="product-tab">
+        <div class="product-tab-title" tabindex="0">More Information <span class="icon-toggle"></span></div>
+        <div class="product-tab-content">{{pages[tab_1].content}}</div>
+        <div class="product-tab-content tab1"></div>
+
+      </div>
+
+      <div class="product-tab">
+        <div class="product-tab-title" tabindex="0">Instructions <span class="icon-toggle"></span></div>
+        {%unless product.tags contains 'skipbundle'%}<div class="product-tab-content">{{pages[tab_2].content}}</div>{%endunless%}
+        <div class="product-tab-content tab2">{{pages[tab_2].content}}</div>
+
+      </div>
+             
+
+    
+  
+      <div class="product-tab">
+        <div class="product-tab-title" tabindex="0">Ingredients <span class="icon-toggle"></span></div>
+        
+          <div class="product-tab-content tab3">{{pages[tab_3].content}}</div>
+        
+       {%unless product.tags contains 'skipbundle'%} <div class="product-tab-content">{{pages[tab_3].content}}{%endunless%}
+         
+    
+        
+    {% unless product.tags contains 'noingredients' %}
+          <a style="    width: 100%; max-width: 400px;
+    margin-top: 15px;" class="btn btn--primary" target="_blank" href="{{ ingredients }}">CA INGREDIENT DISCLOSURE REQUIREMENTS</a>
+      {% endunless %}
+
+        
+          
+        </div>
+        
+       
+      </div>
+ 
+    
+    {%- if enable_reviews or settings.enable_yotpo and settings.yotpo_ID != '' -%}
+      <div class="product-tab is-active" id="product-tab--reviews">
+        <div class="product-tab-title" tabindex="0">{{ 'products.general.reviews' | t }} <span class="icon-toggle"></span></div>
+        <div class="product-tab-content">
+          <div class="product__reviews" id="reviews-scroll">
+            {%- if settings.enable_yotpo and settings.yotpo_ID != '' -%}
+              {% include 'yotpo-reviews' %}
+            {%- elsif enable_reviews -%}
+              <div id="stamped-main-widget" 
+                data-widget-style="standard"
+                data-product-id="{{ product.id }}" 
+                data-name="{{ product.title | escape }}" 
+                data-url="{{ shop.url }}{{ product.url }}" 
+                data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" 
+                data-description="{{ product.description | escape }}" 
+                data-product-sku="{{product.handle}}"
+                data-product-type="{{product.type}}"
+                   data-offset="100"
+                   data-offset-mobile="100"> 
+               
+                </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+    
+  </div>
+{%- endif -%}

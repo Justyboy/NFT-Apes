@@ -1,0 +1,57 @@
+{%- unless image_1 == blank and image_2 == blank and heading == blank and description == blank and button_text == blank -%}
+
+<div class="product-feature{% if text_position == 'left' %} product-feature--reverse{% endif %}" id="product-feature-{{ section_id }}">
+  <div class="product-feature__images product-feature__images--{{ image_position }} product-feature__images--{{ image_layout }}{% if image_2 == blank %} product-feature__images--single{% endif %}{% if hide_image_2 or image_2 == blank %} product-feature__images--single-mobile{% endif %}">
+    <div class="product-feature__image product-feature__image--primary">
+      {%- if image_link_1 != blank -%}<a href="{{ image_link_1 }}">{%- endif -%}
+      {%- if image_1 != blank -%}
+        {%- assign image = image_1 -%}
+        <div class="product-feature__image-bg lazyload"
+          data-bgset="{% include 'bgset', image: image %}"
+          data-sizes="auto"
+          data-parent-fit="cover">
+        </div>
+        <noscript>
+          <div class="product-feature__image-bg" style="background-image: url({{ image | img_url: '1024x' }});"></div>
+        </noscript>
+      {%- else -%}
+        <div class="product-feature__image-bg placeholder-svg--overlayed">
+          {{- 'image' | placeholder_svg_tag: 'placeholder-svg-filled' -}}
+        </div>
+      {%- endif -%}
+      {%- if image_link_1 != blank -%}</a>{%- endif -%}
+    </div>
+
+    {%- if image_2 != blank -%}
+      <div class="product-feature__image product-feature__image--secondary">
+        {%- if image_link_2 != blank -%}<a href="{{ image_link_2 }}">{%- endif -%}
+          {%- assign image = image_2 -%}
+          <div class="product-feature__image-bg lazyload"
+            data-bgset="{% include 'bgset', image: image %}"
+            data-sizes="auto"
+            data-parent-fit="cover">
+          </div>
+          <noscript>
+            <div class="product-feature__image-bg" style="background-image: url({{ image | img_url: '1024x' }});"></div>
+          </noscript>
+        {%- if image_link_2 != blank -%}</a>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-feature__text product-feature__text--{{ text_alignment }}">
+    <div class="product-feature__text-wrapper">
+      {%- if heading != blank -%}
+        <h2>{{ heading | escape }}</h2>
+      {%- endif -%}
+      <hr>
+      {%- if description != blank -%}
+        {{ description }}
+      {%- endif -%}
+      {%- if button_text != blank -%}
+        <a href="{{ button_link }}" class="btn btn--{{ button_style }}">{{ button_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+{%- endunless -%}

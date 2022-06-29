@@ -1,0 +1,114 @@
+<!-- /sections/blog-template.liquid -->
+{%- assign columns = section.settings.post_columns | plus: 0 -%}
+
+{%- if columns == 1 -%}
+	{%- assign width = 'grid__item' -%}
+	{%- assign paginator = 5 -%}
+{%- elsif columns == 2 -%}
+	{%- assign width = 'grid__item large--one-half medium-down--one-whole' -%}
+	{%- assign paginator = 6 -%}
+{%- elsif columns == 3 -%}
+	{%- assign width = 'grid__item large--one-third medium-down--one-whole' -%}
+	{%- assign paginator = 9 -%}
+{%- else -%}
+	{%- assign width = 'grid__item large--one-quarter medium-down--one-whole' -%}
+	{%- assign paginator = 15 -%}
+{%- endif -%}
+
+<style>.article-preview-image { padding-top: {{ section.settings.image_aspect_ratio | times: 100 | append: '%' }}; }</style>
+<section data-section-type="blog-posts" data-section-id="{{ section.id }}">
+	{%- paginate blog.articles by paginator -%}
+	
+
+		<div class="wrapper wrapper--{% if columns == 1 %}small{% else %}medium{% endif %}">
+			<div class="grid">
+				{% comment %}
+					Loop through each article.
+				{% endcomment %}
+				{%- for article in blog.articles -%}
+					<div class="grid__item {{ width }} blog-child">
+						{%- if article.image -%}
+						<a href="{{ article.url }}" class="blog-child__image-link"> 
+							<div 
+								class="article-preview-image lazyload"
+								data-bgset="{% include 'bgset', image: article.image %}"
+								data-sizes="auto"
+								data-parent-fit="cover"
+							></div>
+							<noscript>
+								<div class="article-preview-image" style="background-image:url('{{ article.image | img_url:'2048x' }};')"></div>
+							</noscript>
+						</a>
+						{%- endif -%}
+						<h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+						{%- capture author -%}{{ article.author }}{%- endcapture -%}
+						{%- capture date -%}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{%- endcapture -%}
+						<small class="light-gray">{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}</small>
+						<a href="{{ article.url }}">
+							<div class="rte">
+								{%- if article.excerpt.size > 0 -%}
+								{{ article.excerpt }}
+								{%- else -%}
+								<p>{{ article.excerpt_or_content | strip_html | truncatewords: 50 }}</p>
+								{%- endif -%}
+							</div>
+						</a>
+						<ul class="inline-list">
+							{%- if blog.comments_enabled? and article.comments_count != 0 -%}
+							<li>
+								<a href="{{ article.url }}#Comments" class="blog-comments-link">
+									<i class="custom-icon-comment"></i>
+									{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+								</a>
+							</li>
+							{%- endif -%}
+							{%- include 'tags-article' -%}
+						</ul>
+					</div>
+				{%- endfor -%}
+
+				{%- if paginate.pages > 1 -%}
+					<div class="grid__item">
+						<hr>
+						<div class="pagination">
+							{{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+						</div>
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endpaginate -%}
+</section>
+
+{% schema %}
+	{
+		"name": "Blog",
+		"settings": [
+			{
+				"type": "range",
+				"id": "post_columns",
+				"label": "Posts per row",
+				"info": "Desktop only",
+				"min": 1,
+				"max": 4,
+				"default": 1
+			},
+			{
+				"type": "range",
+				"id": "image_aspect_ratio",
+				"label": "Image aspect ratio",
+				"min": 0.5,
+				"max": 1.5,
+				"step": 0.1,
+				"unit": ":1",
+				"default": 0.6
+			},
+			{
+				"type": "checkbox",
+				"id": "show_rss_icon",
+				"label": "Show RSS icon",
+				"default": false
+			}
+		]
+	}
+{% endschema %}

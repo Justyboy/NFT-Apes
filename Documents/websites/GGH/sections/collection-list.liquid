@@ -1,0 +1,159 @@
+{%- assign layout = section.settings.layout -%}
+{%- assign columns = section.settings.columns -%}
+{%- assign text_color = section.settings.text_color -%}
+{%- assign text_position = section.settings.text_position -%}
+<style>#ListCollections[data-section-id="{{ section.id }}"] .list-collections__slide-image { padding-top: {{ section.settings.image_aspect_ratio | times: 100 | append: '%' }}; }</style>
+<section data-section-type="list-collections" data-section-id="{{ section.id }}" id="ListCollections">
+  <div class = "wrapper">
+    {%- if section.settings.title != blank -%}
+      <div class="text-center list-collectons-title">
+        <h2>{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="collection-grid{% if layout == 'carousel' %} collection-grid--slider{% endif %}">
+      <div class="{% if layout == 'carousel' %}list-collections__slider js-list-collections__slider{% else %}list-collections__grid{% endif %} {{ text_color }}" data-columns="{{ columns }}" data-text-position="{{ text_position }}">
+        {%- for block in section.blocks limit: section.blocks.size -%}
+          {%- assign collection = collections[block.settings.collection] -%}
+          <div class="list-collections__slide {% if collection == empty %}list-collections__slide--onboarding{% endif %}" {{ block.shopify_attributes }}>
+            {%- include 'collection-grid-item' -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "collection-list",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "carousel",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "carousel",
+            "label": "Carousel"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Collections per row",
+        "default": 4,
+        "min": 1,
+        "max": 4,
+        "step": 1
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+        "type": "header",
+        "content": "Items"
+      },
+      {
+        "type": "range",
+        "id": "image_aspect_ratio",
+        "label": "Image aspect ratio",
+        "min": 0.5,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": ":1",
+        "default": 1.2
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text position",
+        "default": "bottom_left",
+        "options": [
+          {
+            "value": "bottom_left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "text-light",
+        "options": [
+          {
+            "value": "text-light",
+            "label": "Light"
+          },
+          {
+            "value": "text-dark",
+            "label": "Dark"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "label": "Overlay opacity",
+        "min": 0,
+        "max": 95,
+        "step": 5,
+        "unit": "%",
+        "default": 20
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

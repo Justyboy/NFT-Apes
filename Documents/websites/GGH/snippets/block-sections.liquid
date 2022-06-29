@@ -1,0 +1,126 @@
+{%- if section.blocks.size > 0 -%}
+
+	{%- for block in section.blocks -%}
+		{%- case block.type -%}
+
+			{%- when 'banner' -%}
+				{% comment %} Banner Settings {% endcomment %}
+				{%- assign section_id = block.id -%}
+			    {%- assign subheading = block.settings.subheading -%}
+			    {%- assign heading = block.settings.title -%}
+			    {%- assign text = block.settings.text -%}
+			    {%- assign image = block.settings.image -%}
+			    {%- assign height = block.settings.height -%}
+			    {%- assign text_position = block.settings.text_position -%}
+			    {%- assign heading_font_size = block.settings.heading_font_size -%}
+				{%- assign text_font_size = block.settings.text_font_size -%}
+			    {%- assign text_color = block.settings.text_color -%}
+			    {%- assign overlay_opacity = block.settings.overlay_opacity | times: 0.01 | round: 2 -%}
+
+			    <div class="banner full-header" {{ block.shopify_attributes }}>
+			    	{%- include 'banner' -%}
+			    </div>
+
+			{%- when 'product-feature' -%}
+				{%- comment -%} Product features settings {%- endcomment -%}
+
+				{%- comment -%} Layout {%- endcomment -%}
+				{%- assign section_id = block.id -%}
+				{%- assign image_position = block.settings.image_position -%}
+				{%- assign image_layout = block.settings.image_layout -%}
+				{%- assign text_position = block.settings.text_position -%}
+				{%- assign text_alignment = block.settings.text_alignment -%}
+
+				{%- comment -%} Text {%- endcomment -%}
+				{%- assign heading = block.settings.heading -%}
+				{%- assign description = block.settings.description -%}
+
+				{%- comment -%} Button {%- endcomment -%}
+				{%- assign button_text = block.settings.button_text -%}
+				{%- assign button_link = block.settings.button_link -%}
+				{%- assign button_style = block.settings.button_style -%}
+
+				{%- comment -%} Images {%- endcomment -%}
+				{%- assign image_1 = block.settings.image_1 -%}
+				{%- assign image_2 = block.settings.image_2 -%}
+				{%- assign image_link_1 = block.settings.image_link_1 -%}
+				{%- assign image_link_2 = block.settings.image_link_2 -%}
+				{%- assign hide_image_2 = block.settings.hide_image_2 -%}
+				
+				<div class="product-feature-section" {{ block.shopify_attributes }}>
+					<div class="wrapper">
+			    		{% include 'product-feature' %}
+					</div>
+				</div>
+				
+			{%- when 'rich-text' -%}
+				{% comment %} Rich Text Settings {% endcomment %}
+
+				{%- assign show_image = false -%}
+				{%- assign section_id = block.id -%}
+				{%- assign text_position = block.settings.text_position -%}
+				{%- assign logo = block.settings.logo -%}
+				{%- assign subheading = block.settings.subheading -%}
+				{%- assign heading = block.settings.heading -%}
+				{%- assign text = block.settings.text -%}
+				{%- assign button_text = block.settings.button_text -%}
+				{%- assign button_url = block.settings.button_url -%}
+				{%- assign button_style = block.settings.button_style -%}
+				{%- assign secondary_button_text = block.settings.secondary_button_text -%}
+				{%- assign secondary_button_url = block.settings.secondary_button_url -%}
+				{%- assign secondary_button_style = block.settings.secondary_button_style -%}
+				{%- assign heading_font_size = block.settings.heading_font_size -%}
+				{%- assign text_font_size = block.settings.text_font_size -%}
+
+				<div class="rich-text" {{ block.shopify_attributes }}>
+					{%- include 'rich-text' -%}
+				</div>
+
+			{%- when 'image-with-text' -%}
+				{% comment %} Image with text Settings {% endcomment %}
+
+				{%- assign show_image = true -%}
+				{%- assign section_id = block.id -%}
+				{%- assign section_height = block.settings.section_height -%}
+				{%- assign image = block.settings.image -%}
+				{%- assign image_background = block.settings.image_background -%}
+				{%- assign text_position = block.settings.text_position -%}
+				{%- assign logo = false -%}
+				{%- assign subheading = block.settings.subheading -%}
+				{%- assign heading = block.settings.heading -%}
+				{%- assign text = block.settings.text -%}
+				{%- assign video_url = block.settings.video_url -%}
+				{%- assign button_text = block.settings.button_text -%}
+				{%- assign button_url = block.settings.button_url -%}
+				{%- assign button_style = block.settings.button_style -%}
+				{%- assign secondary_button_text = '' -%}
+				{%- assign heading_font_size = 28 -%}
+				{%- assign text_font_size = 14 -%}
+
+				<div class="rich-text rich-text--{{ section_id }} {% if image_background %}rich-text--has-background{% endif %} featured-content-section {{ section_height }} full-header js-section-container"{% unless image_background %} data-prevent-full-header{% endunless %} {{ block.shopify_attributes }}>
+					<div class="featured-content-section__wrapper js-section-content">
+						{%- include 'rich-text' -%}
+					</div>
+				</div>
+
+			{%- when 'map' -%}
+				{% comment %} Map Settings {% endcomment %}
+
+				{%- assign section_id = block.id -%}
+				{%- assign api_key = block.settings.api_key -%}
+				{%- assign map_address = block.settings.map_address -%}
+				{%- assign map_height = block.settings.map_height -%}
+				{%- assign location_title = block.settings.location_title -%}
+				{%- assign location_title_size = block.settings.location_title_size -%}
+				{%- assign address = block.settings.address -%}
+				{%- assign card_color = block.settings.card_color -%}
+				{%- assign style = block.settings.style -%}
+				{%- assign zoom = block.settings.zoom -%}
+				{%- assign background_image = block.settings.background_image -%}
+
+				<div class="map" {{ block.shopify_attributes }}>
+					{%- include 'map' -%}
+				</div>
+		{%- endcase -%}
+	{%- endfor -%}
+{%- endif -%}

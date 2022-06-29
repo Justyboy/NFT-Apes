@@ -1,0 +1,24 @@
+{%- assign image = media.preview_image -%}
+{%- assign image_widths = '295,394,590,700,800,1000,1200' -%}
+{%- include 'theme-rias' -%}
+<div class="product-single__thumbnail" data-id="{{ media.id }}" data-thumbnail-id="{{ section.id }}-{{ media.id }}">
+	<a class="product-single__thumbnail-link" href="{{ media.preview_image | img_url: '1024x' }}">
+		<img src="{{ 'blank.gif' | asset_img_url: '1x1' }}"
+			 class="product-single__thumbnail-img lazyload"
+			 data-src="{{ image_url_pattern }}"
+			 data-widths= "[{{ image_widths }}]"
+			 data-aspectratio="{{ image.aspect_ratio }}"
+			 data-sizes="auto"
+			 data-object-fit="cover"
+			 alt="{{ image.alt | escape }}">
+		<noscript>
+			<img src="{{ image.src | img_url: 'original' }}" alt="{{ image.alt | escape }}" class="product-single__thumbnail-img"> 
+		</noscript>
+
+		{%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+			{%- include 'icon-media-video' -%}
+		{%- elsif media.media_type == 'model' -%}
+			{%- include 'icon-media-model' -%}
+		{%- endif -%}
+	</a>
+</div>

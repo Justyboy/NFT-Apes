@@ -1,0 +1,44 @@
+<div class="nav-search">
+  <div class="nav-search__scroller">
+    <div class="nav-search__container wrapper">
+      <div class="nav-search__close-container">
+        <button class="nav-search__close" aria-expanded="true">{% include 'icon-close' %}</button>
+      </div>
+
+      <form action="{{ routes.search_url }}" method="get" class="search-form" role="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="250">
+        <div class="nav-search__input-group">
+          <input class="nav-search__input" name="q" type="search" id="search-field" placeholder="{{ 'general.search.placeholder' | t }}" value="" />
+          <input type="hidden" name="type" value="product" />
+          <button type="submit" class="nav-search__submit">{% include 'icon-search' %}</button>
+        </div>
+      </form>
+
+      {%- assign popular_links = section.settings.menu_searches_list -%}
+      {%- unless popular_links == blank -%}
+        <div class="results-popular">
+          <p class="results-popular__title">{{ 'general.search.popular' | t }}</p>
+          <ul class="results-popular__links">
+            {%- for link in linklists[popular_links].links -%}
+              <li><a href="{{ link.url }}" data-popular-search-link aria-expanded="false">{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endunless -%}
+      
+      {%- if section.settings.show_search_links -%}
+        <div class="results-popular">
+          <p class="results-popular__title">{{ 'general.search.browse_categories' | t }}</p>
+          <ul class="results-popular__links">
+            {%- for collection in collections -%}
+              <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div id="search-results" class="results"></div>
+
+      <div class="pagination__loading">{{ 'collections.pagination.loading' | t }}<span class="dots dots--animated"><span>.</span><span>.</span><span>.</span></span></div>
+    </div>
+  </div>
+</div>

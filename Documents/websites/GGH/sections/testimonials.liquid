@@ -1,0 +1,170 @@
+<!-- /sections/testimonials.liquid -->
+
+{% comment %}
+Establishes the layout
+{% endcomment %}
+
+{%- assign total_blocks = section.blocks.size -%}
+
+{%- if total_blocks == 1 -%}
+  {%- assign testimonial_width = 'grid__item push--large--one-quarter large--one-half medium-down--one-whole' -%}
+{%- elsif total_blocks == 2 -%}
+  {%- assign testimonial_width = 'grid__item large--one-half medium-down--one-whole' -%}
+{%- else -%}
+  {%- assign testimonial_width = 'grid__item largest--one-third large--one-half medium-down--one-whole' -%}
+{%- endif -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="testimonials" class="testimonials-section{% if section.settings.show_quotes %} has-quotes{% endif %}{% if section.settings.show_lines %} has-lines{% endif %}">
+  {%- if section.settings.title != blank -%}
+  <div>
+    <h1 class="text-center testimonials-header">{{ section.settings.title | escape }}</h1>
+  </div>
+  {%- endif -%}
+  <div class="grid--full testimonials-wrapper testimonials__slider{% if section.blocks.size == 1 %} testimonials--single{% endif %}">
+
+      {%- for block in section.blocks -%}
+        {%- assign image = block.settings.image -%}
+        
+        {%- assign customer_name = block.settings.customer_name -%}
+        {%- assign testimonial_text = block.settings.testimonial_text -%}
+
+        {%- unless image == blank and customer_name == blank and testimonial_text == blank -%}
+          <div class="testimonial__item {{ testimonial_width }}" {{ block.shopify_attributes }}>
+            <div class="testimonials-table">
+              <div class="testimonial-text text-center">{{ testimonial_text }}</div>
+
+              {%- if image != blank or customer_name != blank -%}
+                <div class="user-profile">
+                  <div class="testimonial-cell">
+                    {%- if image != blank -%}
+                    {%- assign image_width = block.settings.image_width -%}
+                    {%- assign image_height = image_width | divided_by: image.aspect_ratio -%}
+
+                    <div class="user-image">
+                      {%- assign image_widths = '50,100,125,250' -%}
+
+                      {%- comment -%} Image height must be max 200px {%- endcomment -%}
+                      {%- if image_height > 200 -%}
+                        {%- assign image_height = 200 -%}
+                        {%- assign image_width = image_height | times: image.aspect_ratio | round -%}
+                      {%- endif -%}
+
+                      {%- include 'theme-rias' -%}
+                      <img
+                         class="lazyload"
+                         src="{{ 'blank.gif' | asset_img_url: '1x1' }}"
+                         data-src="{{ image_url_pattern }}"
+                         data-widths= "[{{ image_widths }}]"
+                         data-aspectratio="{{image.aspect_ratio }}"
+                         data-sizes="auto"
+                         style="width: {{ image_width | append: 'px' }}; height: {{ image_height | append: 'px' }};"
+                         alt="{{ image.alt | escape }}">
+                      <noscript>
+                        <img src="{{ image | img_url: '400x' }}" alt="{{ image.alt | escape }}" style="width: {{ image_width | append: 'px' }}; height: {{ image_height | append: 'px' }};">
+                      </noscript>
+                    </div>
+                    {%- endif -%}
+                    
+                    {%- if customer_name != blank -%}
+                      <div class="user-name">{{ customer_name | escape }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+
+            </div>
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+
+    </div>
+  </div>
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Testimonials"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quotes",
+      "label": "Show quotation marks",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_lines",
+      "label": "Show separation lines",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "testimonial_text",
+          "label": "Testimonial",
+          "default": "<p>Use this testimonial as an opportunity for your customers to discuss your brand and what sets you apart from the competition.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer photo"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image width (in pixels)",
+          "min": 50,
+          "max": 200,
+          "default": 100,
+          "step": 5,
+          "unit": "px"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "John Doe"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "<p>Use this testimonial as an opportunity for your customers to discuss your brand and what sets you apart from the competition.</p>",
+            "customer_name":"Sherlock Holmes"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "<p>Use this testimonial as an opportunity for your customers to discuss your brand and what sets you apart from the competition.</p>",
+            "customer_name":"John Watson"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "<p>Use this testimonial as an opportunity for your customers to discuss your brand and what sets you apart from the competition.</p>",
+            "customer_name":"Mycroft Holmes"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,179 @@
+<!doctype html>
+  <!--[if IE 8]><html class="no-js ie9 lt-ie9" lang="en"> <![endif]-->
+  <!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+  <!--[if !IE]><!--><html class="not-ie no-js"><!--<![endif]-->
+  <head>
+
+
+<script>
+/* >> TriplePixel :: start*/
+~function(W,H,A,L,E){try{A.setItem(H,1+(0|A.getItem(H)||0)),W.includes("⇈")&&A.setItem(H+"Stg",1+(0|A.getItem(H+"Stg")||0))}catch(e){}function O(T,R){void 0===R&&(R=!1),H=new XMLHttpRequest,H.open("GET","//triplewhale-pixel.web.app/triplepx.txt?"+~(Date.now()/9e7),!0),H.send(null),H.onreadystatechange=function(){4===H.readyState&&200===H.status?setTimeout(function(){return eval(H.responseText)},50):(299<H.status||H.status<200)&&T&&!R&&(R=!0,O(T-1))}}A=window,A[H]||(L=function(){return"tp.."+Date.now().toString(36)+Math.random().toString(36)},E=A[H]=function(t,e,n){return W=L(),(E._q=E._q||[]).push([W,e,n]),W},E.ch=W,O(5))}("","TriplePixel",localStorage);
+/* << TriplePixel :: end*/
+</script>
+
+
+
+    
+    <meta name="google-site-verification" content="lx3j-1ISxolMnZ7B5xPH0VwrKAbNA8FMoMMN9prxkgc" />
+    
+    <!-- Global site tag (gtag.js) - Google Ads: 986345842 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-986345842"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-986345842');
+</script>
+
+        
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32'}}" type="image/png" />
+    {%- endif -%}
+
+    {% comment %} Title and description {% endcomment %}
+    <title>
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+
+    {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% comment %} Helpers {% endcomment %}
+    {%- include 'social-meta-tags' -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    {{ content_for_header }}
+
+    {% comment %} CSS {% endcomment %}
+    {{- 'theme.scss.css' | asset_url | stylesheet_tag -}}
+    
+    {% if template contains 'index' %}
+   	<style>
+          .site-header{
+            border-bottom: 0 !Important;
+          }
+    </style>
+    {% endif %}
+    <style>
+      
+    </style>
+  
+  
+    
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+  {% render 'shogun-head' %}
+</head>
+
+  
+
+  <body id="{{ page_title | handle }}" class="{% if customer %} customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} no-outline {% if settings.show_spacer_lines %}body--show-spacer-lines{% else %}body--hide-spacer-lines{% endif %} {% if settings.quick_button == 'buy' %}quick-buy-enabled{% elsif settings.quick_button == 'view' %}quick-view-enabled{% endif %}">
+    <div class="block-body"></div>
+    <a class="in-page-link skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {%- section 'popup' -%}
+    {% comment %}
+    {%- section 'announcement-bar' -%}
+    {% endcomment %}
+    {%- section 'header' -%}
+
+    <div id="PageContainer" class="is-moved-by-drawer">
+
+      <main id="MainContent" class="main-content" role="main">
+        {{ content_for_layout }}
+      </main>
+      {%- section 'footer' -%}
+
+    </div>
+
+    {%- include 'scripts' -%}
+    
+    
+    <script>
+      $('a').click(function(e){
+        var current_path = window.location.pathname;
+        var href = $(this).attr('href');
+        
+        if(href.includes(current_path) && href.includes('#')){
+          e.preventDefault();
+          var anchor = href.substring(href.indexOf("#")+1);
+          console.log('anchor: ', anchor);
+          window.location.hash = anchor;
+        }else{
+        }
+        
+        console.log('href');
+        console.log(current_path);
+      });
+      
+      $('.faq-category-heading').click(function(e){
+        var $parent_el = $(this).parents('.faq-category-container');
+        var $content = $parent_el.find('.faq-list');
+        if($parent_el.hasClass('open')){
+          $content.slideUp(400);
+          $parent_el.removeClass('open');
+        }else{
+          $content.slideDown(400);
+          $parent_el.addClass('open');
+        }
+      });
+      
+      $('.qty-control').click(function(e){
+        var qty_input = $('#Quantity');
+        var current_val = parseInt(qty_input.val());
+        var new_val = 1;
+        
+        if($(this).hasClass('minus')){
+          if(current_val - 1 > 0 ){
+            new_val = current_val - 1;
+          }else{
+            new_val = 1;
+          }
+        }else{
+          new_val = current_val + 1;
+        }
+        
+        qty_input.val(new_val);
+      });
+      
+      
+      $(document).ready(function(){
+      //reset height of tabbed collections 
+        
+        PaloAlto.debounce($(window).resize(function(){
+          var $tabbedCol = $('.collection__tabs');
+          if($tabbedCol.length > 0){
+            $tabbedCol.css('height', 'initial');
+            var height = $tabbedCol.innerHeight();
+            $tabbedCol.css('height', height);
+          }
+        }), 300);
+        
+		setTimeout(function(){ 
+          $(window).trigger('resize');
+        }, 3000);
+        
+      });
+    </script>
+    
+    <script async type="text/javascript" data-api-key="" id="stamped-script-widget" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
+  
+    
+
+<!-- Begin ReCharge code -->
+{% include 'subscription-theme-footer' %}
+<!-- End ReCharge code -->
+
+<!-- Back in Stock helper snippet -->
+{% render 'back-in-stock-helper' %}
+<!-- End Back in Stock helper snippet -->
+  <script src="//cdn.codeblackbelt.com/js/modules/frequently-bought-together/main.min.js?shop=grab-green-home.myshopify.com" defer></script>
+    <img src="https://listen.audiohook.com/c8e09606-f417-4721-8ba6-7b1446d06d97/pixel.png"  style="display: none;">
+</body>
+</html>

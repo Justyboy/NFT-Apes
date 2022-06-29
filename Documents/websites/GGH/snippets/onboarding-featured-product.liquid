@@ -1,0 +1,115 @@
+{%- comment -%}
+	Blank single product state
+{%- endcomment -%}
+
+{%- if layout == 'one-column' -%}
+	<div class = "grid__item large--one-quarter medium-down--hide"></div>
+{%- endif -%}
+
+<!-- Product Photos -->
+<div class="grid__item text-center large--one-half{% if layout == 'one-column' %} medium-down--one-whole{% endif %} product-single__media-wrapper product-single__media-wrapper--no-thumbs">
+	<div id="ProductPhoto--{{ section.id }}">
+		<div class="product-single__media-slider" >
+			<div class="product-single__media-slide">
+				<div class="product-single__media product-single__media--onboarding">
+					{{- 'product-5' | placeholder_svg_tag: 'placeholder-svg' -}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Product Description -->
+<div class="grid__item product-description-wrapper large--one-half{% if layout == 'one-column' %} push--large--one-quarter text-center{% endif %}">
+	{%- if section.settings.enable_vendor -%}
+		<p class="product-vendor">{{ 'homepage.onboarding.vendor' | t }}</p>
+	{%- endif -%}
+	
+	<div class="product-form product-form--onboarding">
+		<!-- Fake Product Text -->
+		<h1 class="featured-product-title product-title">
+			<a href="#!">{{ 'homepage.onboarding.product_title' | t }}</a>
+		</h1>
+
+		{%- if enable_reviews or settings.enable_yotpo and settings.yotpo_ID != '' -%}
+			<div class="product__badge">
+				<span class="spr-badge" data-rating="0.0">
+					<span class="spr-starrating spr-badge-starrating">
+						{%- for i in (1..5) -%}
+							<i class="spr-icon spr-icon-star-empty"></i>
+						{%- endfor -%}
+					</span>
+
+					<span class="stamped-badge-caption" data-reviews="0" data-rating="0.0" data-label="reviews" aria-label="0 reviews" data-version="2">0<span style="display:block;"> reviews</span></span> 
+				</span>
+			</div>
+		{%- endif -%}
+
+		<h2 class="product-price" itemprop="price">
+			<span id="ProductPrice">{{ 1999 | money }}</span>
+		</h2>
+
+		<div class="variants-wrapper">
+			{%- if enable_swatches -%}
+				<div class="swatch clearfix">
+					<div class="header">Color</div>
+					<div data-value="White" class="swatch-element color white available">
+						<input id="product_id-{{ section.id }}--white" type="radio" name="product_id-{{ section.id }}" value="white" title="White" checked>
+
+						<label for="product_id-{{ section.id }}--white">
+							<span style="background-color: white;"></span>
+						</label>
+					</div>
+
+					<div data-value="Grey" class="swatch-element color grey available">
+						<input id="product_id-{{ section.id }}--grey" type="radio" name="product_id-{{ section.id }}" value="Grey" title="Grey">
+
+						<label for="product_id-{{ section.id }}--grey">
+							<span style="background-color: grey;"></span>
+						</label>
+					</div>
+
+					<div data-value="Black" class="swatch-element color black available">
+						<input id="product_id-{{ section.id }}--black" type="radio" name="product_id-{{ section.id }}" value="Black" title="Black">
+
+						<label for="product_id-{{ section.id }}--black">
+							<span style="background-color: black;"></span>
+						</label>
+					</div>
+				</div>
+			{%- endif -%}
+
+			{%- unless section.settings.hide_quantity -%}
+				<div class="qtydiv">
+					<label for="OnboardingQuantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
+					<input type="text" id="OnboardingQuantity" name="quantity" value="1" min="1" class="quantity-selector quantity-input">
+				</div>
+			{%- endunless -%}
+		</div>
+
+		<button class="btn {% if enable_payment_button %}btn--secondary{% else %}btn--submit{% endif %}">
+			<span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+		</button>
+
+		{%- if enable_payment_button -%}
+			<div>
+				<div class="shopify-payment-button">
+					<button class="shopify-payment-button__button shopify-payment-button__button--unbranded">{{ 'products.product.buy_it_now' | t }}</button>
+				</div>
+			</div>
+		{%- endif -%}
+
+		<div class="product-description rte" itemprop="description">
+			<p>{{ 'homepage.onboarding.single_product_description' | t }}</p>
+		</div>
+	</div>
+
+	{%- comment -%}
+	Social Icons
+	{%- endcomment -%}
+	<div class="featured-product-social-wrapper">
+		{%- if section.settings.enable_social_sharing_products -%}
+			{%- include 'social-sharing' -%}
+		{%- endif -%}
+	</div>
+</div>

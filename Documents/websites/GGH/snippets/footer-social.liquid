@@ -1,0 +1,95 @@
+{%- if settings.social_facebook_link != blank or settings.social_twitter_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_instagram_link != blank -%}
+  
+<!-- Font Awesome Link -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<div class="social-sharing-wrapper container">
+    {%- if settings.social_facebook_link != blank -%}
+      <a  href = "{{settings.social_facebook_link }}">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    {%- endif -%}
+
+    {%- if settings.social_twitter_link != blank -%}
+      <a  href = "{{ settings.social_twitter_link }}">
+        <i class="custom-icon-twitter"></i>
+      </a>
+    {%- endif -%}
+
+    {%- if settings.social_pinterest_link != blank -%}
+      <a  href = "{{settings.social_pinterest_link }}">
+        <i class="custom-icon-pinterest"></i>
+      </a>
+    {%- endif -%}
+    
+     {%- if settings.social_tiktok_link != blank -%}
+      <a  href = "{{settings.social_tiktok_link }}">
+        <i class="fa-brands fa-tiktok"></i>
+      </a>
+    {%- endif -%}
+
+    {%- if settings.social_instagram_link != blank -%}
+      <a  href = "{{ settings.social_instagram_link }}">
+           <i class="fab fa-instagram" aria-hidden="true"></i>
+      </a>
+    {%- endif -%}
+  </div>
+ 
+{%- endif -%}
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  border-size: border-box;
+}
+  .social-sharing-wrapper a{
+    margin: 0 16px;
+  }
+  
+  .fa-tiktok:before{
+    margin: 0;
+  }
+
+/* Background*/
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+/* Icons*/
+.container i {
+  font-size: 30px;
+  color: #fff;
+  margin-left: 50px;
+  transition: all 0.3s ease;
+}
+.container i:first-child {
+  margin-left:0;
+}
+.container i:hover {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  perspective: 1000px;
+  filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 20px #fff);
+  transition-delay: 0.3s;
+}
+/* Animation */
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  
+  30%, 50%, 70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(2px, 0, 0);
+}
+</style>

@@ -1,0 +1,76 @@
+{%- assign enable_section = section.settings.related_products_enable -%}
+{%- assign enable_swatches = settings.color_swatches -%}
+{%- assign enable_reviews = settings.enable_reviews -%}
+{%- assign show_review_stars = settings.show_review_stars -%}
+{%- assign image_size = settings.image_size -%}
+{%- assign image_aspect_ratio = settings.image_aspect_ratio -%}
+{%- assign product_grid_slideshow = settings.product_grid_slideshow -%}
+{%- assign limit = section.settings.limit -%}
+{%- assign heading = section.settings.product_recommendations_heading -%}
+
+<section
+  data-related-products
+  data-section-type="related-products"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-limit="{{ limit }}"
+  data-swatches="{{ enable_swatches }}"
+  data-reviews="{{ enable_reviews }}"
+  data-image-size="{{ image_size }}"
+  data-image-aspectratio="{{ image_aspect_ratio }}"
+  data-product-grid-slideshow="{{ product_grid_slideshow }}">
+
+	{%- if enable_section -%}
+		{%- if recommendations.performed -%}
+			{%- if recommendations.products_count > 0 -%}
+				<div class="wrapper">
+					{%- if heading != blank -%}
+						<h4 class="featured-collection__heading text-center">{{ heading }}</h4>
+					{%- endif -%}
+
+					<div class="featured-collection__container featured-collection__container--{{ settings.product_grid_layout }}">
+						<div class="featured-collection product-grid--{{ settings.product_grid_layout }} text-center">
+							{%- for product in recommendations.products limit: limit -%}
+								{% include 'product-grid-item', grid_item_width: 'small--one-whole medium--one-half large--one-quarter' %}
+							{%- endfor -%}
+						</div>
+					</div>
+				</div>
+			{%- endif -%}
+		{%- else -%}
+	    	<div class="related__placeholder"></div>
+		{%- endif -%}
+	{%- endif -%}
+
+</section>
+
+{% schema %}
+{
+	"name": "Product recommendations",
+	"class": "related-products",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "related_products_enable",
+			"label": "Show related products",
+			"info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+			"default": true
+		},
+		{
+			"type":    "range",
+			"id":      "limit",
+			"min":     1,
+			"max":     6,
+			"step":    1,
+			"label":   "Product limit",
+			"default": 4
+		},
+		{
+			"type": "text",
+			"id": "product_recommendations_heading",
+			"label": "Heading",
+			"default": "You May Also Like"
+		}
+	]
+}
+{% endschema %}

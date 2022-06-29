@@ -1,0 +1,286 @@
+{% comment %} /sections/background-video.liquid {% endcomment %}
+
+{%- assign video_id = section.settings.hero_video_link.id -%}
+{%- assign video_enable_sound = section.settings.video_enable_sound -%}
+{%- assign section_height = section.settings.video_height | plus: 0 -%}
+{%- assign title = section.settings.title -%}
+{%- assign subheading = section.settings.main_subheading -%}
+{%- assign image = section.settings.image -%}
+{%- assign button_text = section.settings.button_text -%}
+{%- assign button_link = section.settings.button_link -%}
+{%- assign button_style = section.settings.button_style -%}
+
+{%- if button_link != blank -%}
+  {%- assign button_link =  section.settings.button_link  -%}
+{%- else -%}
+  {%- assign button_link = "#!" -%}
+{%- endif -%}
+
+{%- if section.settings.enable_autoplay -%}
+{%- assign autoplay_var = 1 -%}
+{%- else -%}
+{%- assign autoplay_var = 0 -%}
+{%- endif -%}
+
+{%- assign text_position = section.settings.text_position -%}
+{%- assign overlay_opacity = section.settings.overlay_opacity | times: 0.01 -%}
+{%- assign heading_font_size = section.settings.heading_font_size -%}
+{%- assign text_font_size = section.settings.text_font_size -%}
+
+<div class="featured-video-section {{ section.settings.video_height }} js-section-container" data-section-id="{{ section.id }}" data-section-type="featured-video">
+  <div class="video-wrapper">
+    <div class="{{ text_position }} text-inside no-play-button js-section-content">
+      {% comment %} Text {% endcomment %}
+        <div class="video-text-wrapper wrapper wrapper--small">
+          {%- if title != blank -%}
+            <h1 class="main-heading size--{{ heading_font_size }} {{ section.settings.text_color }}">{{ title | escape }}</h1>
+          {%- endif -%}
+
+          {%- if subheading != blank -%}
+            <h2 class="main-subheading size--{{ text_font_size }} {{ section.settings.text_color }}">{{ subheading | escape }}</h2>
+          {%- endif -%}
+
+          {% comment %} Button {% endcomment %}
+          {%- if button_text != blank -%}
+          <div class="buttons-wrapper">
+            {% if button_text != blank %}
+            <a class="btn btn--{{ button_style }} call-to-action" href="{{ button_link }}">{{ button_text }}</a>
+            {% endif %}
+          </div>
+          {%- endif -%}
+
+          <span class="play-button-mobile visually-hidden">
+            <span class="filled-circle"></span>
+            <span class="stroke-circle"></span>
+            <span class="triangle custom-icon-triangle"></span>
+          </span>
+        </div> 
+      </div>
+
+      {% comment %} Video {% endcomment %}
+      <div class="video video--{{ section.id }}" id="video-{{ section.id }}-container" data-enable-sound="{{ video_enable_sound }}">
+      
+        <div class="video__background{% if image == blank %} placeholder-bg{% else %} lazyload{% endif %}"
+          {% unless image == blank %}
+            data-bgset="{% include 'bgset', image: image %}"
+            data-sizes="auto"
+            data-parent-fit="cover"
+          {% endunless %}>
+          {%- if image == blank -%}
+            {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg-filled' -}}
+          {%- endif -%}
+        </div>
+        <noscript>
+          <div class="video__background{% if image == blank %} placeholder-bg{% endif %}"{% unless image == blank %} style="background-image: url({{ image | img_url: '2048x' }});"{% endunless %}>
+            {%- if image == blank -%}
+              {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg-filled' -}}
+            {%- endif -%}
+          </div>
+        </noscript>
+
+        {%- if video_id != blank -%}
+          <div class="video__iframe" id="video-{{ section.id }}" data-video-id="{{ video_id }}"></div>
+        {%- endif -%}
+
+        <div class="overlay" style="opacity:{{ overlay_opacity }};"></div>        
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "class": "featured-video-section full-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "video_height",
+      "label": "Height",
+      "default": "sixty-fifty-height-hero",
+      "options": [
+        {
+          "value": "one-hundred-height-hero",
+          "label": "Full screen"
+        },
+        {
+          "value": "seven-fifty-height-hero",
+          "label": "750px"
+        },
+        {
+          "value": "sixty-fifty-height-hero",
+          "label": "650px"
+        },
+        {
+          "value": "five-fifty-height-hero ",
+          "label": "550px"
+        },
+        {
+          "value": "four-fifty-height-hero",
+          "label": "450px"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Content alignment",
+      "default": "center-center",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top right"
+        },
+        {
+          "value": "center-center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video_url",
+      "id": "hero_video_link",
+      "label": "Video link",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "accept": [
+        "youtube"
+      ],
+      "info": "YouTube links only"
+    },
+    
+    {
+      "type": "checkbox",
+      "id": "video_enable_sound",
+      "label": "Enable sound",
+      "default": false,
+      "info": "If enabled video will not autoplay on mobile devices."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Poster image",
+      "info": "Displays while the video loads."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacity",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Color",
+      "default": "text-light",
+      "options": [
+        {
+          "value": "text-light",
+          "label": "Light"
+        },
+        {
+          "value": "text-dark",
+          "label": "Dark"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Welcome to Palo Alto"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading size",
+      "unit": "px",
+      "step": 4,
+      "min": 40,
+      "max": 64,
+      "default": 48
+    },
+    {
+      "type": "textarea",
+      "id": "main_subheading",
+      "label": "Subheading",
+      "default": "This subheading helps you provide some more detail to the title above."
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text size",
+      "unit": "px",
+      "step": 2,
+      "min": 16,
+      "max": 28,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Text",
+      "default": "Welcome"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Style",
+      "default": "secondary",
+      "options": [
+        { "label": "Primary", "value": "primary" },
+        { "label": "Secondary", "value": "secondary" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "category": "video"
+    }
+  ]
+}
+{% endschema %}

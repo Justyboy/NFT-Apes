@@ -1,0 +1,80 @@
+<!-- /snippets/nav-drawer.liquid -->
+
+<div id="NavDrawer" class="drawer drawer--left" role="navigation">
+  <div class="drawer__header">
+    <div class="drawer__close">
+      <button type="button" class="icon-fallback-text js-drawer-close">
+        <span class="custom-icon-x" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <ul class="mobile-nav">
+    {% for link in linklists[section.settings.main-menu].links %} 
+      {% if link.links != blank %}
+        <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}" aria-haspopup="true">
+          <div class="mobile-nav__has-sublist">
+            <a href="{{ link.url }}" class="mobile-nav__link"><h3>{{ link.title | escape }}</h3></a>
+            <div class="mobile-nav__toggle">
+              <button type="button" class="icon-fallback-text mobile-nav__toggle-open" aria-controls="menu-toggle">
+                <span class="icon icon-plus custom-icon-plus" aria-hidden="true"></span>
+                <span class="icon icon-minus custom-icon-minus" aria-hidden="true"></span>
+                <span class="fallback-text">See More</span>
+              </button>
+            </div>
+          </div>
+          <ul class="mobile-nav__sublist" aria-expanded="false">
+            {% for sub_link in link.links %}
+              {% if sub_link.levels == 1 %}
+              <div class = "mobile-nav__has-sublist">
+              {% endif %}
+              <li class="mobile-nav__item {% if sub_link.active %} mobile-nav__item--active{% endif %} {% if sub_link.levels == 1 %}has-sublist{% endif %}" {% if sub_link.levels == 1 %}aria-haspopup="true"{% endif %}>
+                <a href="{{ sub_link.url }}" class="mobile-nav__link" ><h5>{{ sub_link.title | escape }} </h5></a>
+                {% if sub_link.levels == 1 %}
+                  <div class="mobile-nav__toggle">
+                    <button type="button" class="icon-fallback-text mobile-nav__toggle-open" aria-controls="submenu-toggle">
+                      <span class="icon icon-plus custom-icon-plus" aria-hidden="true"></span>
+                      <span class="icon icon-minus custom-icon-minus" aria-hidden="true"></span>
+                      <span class="fallback-text">See More</span>
+                    </button>
+                  </div>
+                {% endif %}
+              </li>
+              {% if sub_link.levels == 1 %}
+                <div class = "mobile-nav__subsublist" aria-expanded="false">
+                {% for sub_sub_link in sub_link.links %}
+                  <li class="mobile-nav__item {% if sub_sub_link.active %} mobile-nav__item--active{% endif %}">
+                    <a href="{{ sub_sub_link.url }}" class="mobile-nav__link" ><h5>{{ sub_sub_link.title | escape }}</h5></a>
+                  </li>
+                {% endfor %}
+                </div>
+              {% endif %}
+              {% if sub_link.levels == 2 %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      {% else %}
+        <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+          <a href="{{ link.url }}" class="mobile-nav__link" ><h3>{{ link.title }}</h3></a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+        <li class="mobile-nav__item mobile-nav__item--small"><a href="{{ routes.account_url }}" class="mobile-nav__link">{{ 'customer.account.title' | t }}</a></li>
+        <li class="mobile-nav__item mobile-nav__item--small"><a href="{{ routes.account_logout_url }}" class="mobile-nav__link">{{ 'layout.customer.log_out' | t }}</a></li>
+      {% else %}
+        <li class="mobile-nav__item mobile-nav__item--small"><a href="{{ routes.account_login_url }}" class="mobile-nav__link" id="customer_login_link">{{ 'layout.customer.log_in' | t }}</a></li>
+        <li class="mobile-nav__item mobile-nav__item--small"><a href="{{ routes.account_register_url }}" class="mobile-nav__link" id="customer_register_link">{{ 'layout.customer.create_account' | t }}</a></li>
+      {% endif %}
+    {% endif %}
+
+    {%- if section.settings.show_search -%}
+      <li class="mobile-nav__item mobile-nav__item--small"><a href="{{ routes.search_url }}" class="mobile-nav__link">{{ 'layout.navigation.search' | t }}</a></li>
+    {%- endif -%}
+  </ul>
+</div>
