@@ -9,7 +9,7 @@ export default function Home() {
 
 
       {/* Board */}
-      <h1>Trello Clone</h1>
+   
     </main>
   )
 }
