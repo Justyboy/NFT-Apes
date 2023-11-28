@@ -4,17 +4,18 @@ import Button from "./Button"
 
 const Hero = () => {
   return (
-    <section className="max-container padding-container flex flex-col gap-20 py-10 pb-32 md:gap-28 lg:py-20 xl:flex-row">
+    <section className="max-container padding-container flex flex-col gap-20 py-8  lg:py-20 xl:flex-row">
       <div className="hero-map"/>
       
 
       {/* Left */}
-<div className="relative z-20 flex flex-1 flex-col xl:w-1/2">
-  <Image src="/camp.svg" alt="camp" width={50} height={50}
-  className="absolute left-[-5px] top-[-30px] w-10 lf:w-[50px]" />
- <h1 className="bold-52 lg:bold-88">Travel Us</h1>
+<div className="relative z-20 mx-4 flex flex-1 flex-col w-full">
+
+{/* <Image  src="/school-owl-pen-removebg-preview.png" alt="Owl with pen" width={150} height={150} className="absolute left-[-5px] top-[-60px] w-100 lf:w-[50px]" /> */}
+
+ <h1 className=" text-4xl sm:text-5xl lg:text-6xl font-bold">Tutoring whenever and wherever they need it the most.</h1>
  <p className="regular-16 mt-6 text-gray-30 xl:max-w-[520px]">
-  We want to show you the best travel locations
+  Tutoring Nassau County specializing in Math
  </p>
 
  <div className="my-11 flex flex-wrap gap-5">
@@ -37,41 +38,39 @@ const Hero = () => {
  </div>
 
  <div className="flex flex-col w-full gap-3 sm:flex-row">
-  <Button type="button" title="Download App" variant="btn_green"
+  <Button type="button" title="Book Now" variant="btn_green"
   />
-  <Button type="button" title="How we work?" variant="btn_white_text" icon="/play.svg"
-  />
+ 
  </div>
 </div>
 
-<div className="relative flex flex-1 items-start">
-<div className="relative z-20 w-[268px] flex flex-col gap-8 rounded-3xl bg-green-90 px-7 py-8">
-
-<div className="flex flex-col">
-  <div className="flexBetween">
-    <p className="regular-16 text-gray-20">Location</p>
-    <Image src="/close.svg" alt="close" width={24} height={24} />
+<div className="relative flex flex-1">
+<div className="relative z-20 rounded-3xl flex flex-col gap-4 bg-sm-bg bg-cover w-[100%] h-[auto]  py-4 pt-8 pb-30 lg:pb-20 px-4  ">
+  
+<div className="flex flex-col px-8">
+  <div className="flexBetween hand-text">
+  <p className="bold-32 text-gray-10 pb-4 hand-text"> Today's Class </p>
+    <Image src="/school-owl-thumbsup-removebg-preview.png" alt="close" width={150} height={250} />
   </div>
- <p className="bold-20 text-white"> New York </p>
+ 
 </div>
 
 
   <div className="flexBetween">
-  <div className="flex flex-col">
-    <p className="regular-16 block text-gray-20">Distance</p>
-    <p className="bold-20 text-gray-20">173.28 mi</p>
-    </div>
-    <div className="flex flex-col">
-    <p className="regular-16 block text-gray-20">Elevation</p>
-    <p className="bold-20 text-gray-20">2.040 km</p>
-    </div>
+  <div className="flex flex-col px-8 hand-text">
+    <p className="text-2xl sm:text-4xl  block text-gray-10 font-bold italic">The month of December booking now</p>
+    <ul className="pl-20 list-decimal">
+    <li className="text-2xl sm:text-4xl  text-gray-10 pt-4">Math</li>
+    <li className="text-2xl sm:text-4xl  text-gray-10">Per Hour Tutoring</li>
+    <li className="text-2xl sm:text-4xl  text-gray-10">Zoom or locally</li>
+    </ul>
   </div>
 
 </div>
 
   
 </div>
-
+</div>
 
 
       </section>
