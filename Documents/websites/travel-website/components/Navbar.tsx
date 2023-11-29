@@ -11,7 +11,7 @@ const Navbar = () => {
  const [toggleDropdown, setToggleDropdown] = useState(false)
 
   return (
-    <nav className="flexBetween padding-container relative z-30 py-5">
+    <nav className="flex mx-auto justify-center items-center padding-container z-30 py-1 border-2 shadow-1 relative">
         <Link href="/">
     <Image 
     src="/school-owl-book.jpg"
@@ -20,7 +20,7 @@ const Navbar = () => {
      height={100} />
         </Link>
 
-        <ul className="hidden h-full gap-12 lg:flex">
+        <ul className="hidden h-full mx-auto gap-12 lg:flex">
     {NAV_LINKS.map((link) =>(
     <Link href={link.href} key={link.key} className="bold-18
     text-gray-50 flexCenter cursor-pointer pb-1.5 transition-all hover:font-semibold">

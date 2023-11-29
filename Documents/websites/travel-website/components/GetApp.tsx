@@ -6,8 +6,8 @@ const GetApp = () => {
   return (
     <section className="flexCenter w-full flex-col pb-[100px]">
       <div className="get-app">
-        <div className="z-20 flex w-full flex-1 flex-col items-start justify-center gap-12">
-          <h2 className="bold-40 lg:bold-64 xl:max-w-[360px] text-white">Guarantee your success!</h2>
+        <div className="z-20 flex w-full flex-1 flex-col items-start justify-center gap-8">
+          <h2 className="bold-40 lg:bold-52 xl:max-w-[360px] text-white">Guarantee your success!</h2>
           <p className="regular-16 text-gray-50"></p>
           <div className="flex w-full flex-col gap-3 whitespace-nowrap xl:flex-row">
           

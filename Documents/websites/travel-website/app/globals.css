@@ -138,20 +138,23 @@ font-family: 'Titillium Web', sans-serif;
      line-height: 1.4;
      letter-spacing: 3px;
   }
+  
   /* Camp */
   .camp-quote {
     @apply absolute -right-6 bottom-4 w-[140px] lg:bottom-10 xl:-right-8 xl:w-[186px] 3xl:right-0;
   }
 
   /* Feature */
-  .feature-phone {
-    @apply absolute top-[13%] z-10 hidden max-w-[1500px] rotate-[15deg] md:-left-16 lg:flex  3xl:left-20;
+  .feature-img {
+    @apply absolute top-[13%] z-10 hidden max-w-[1500px] rotate-[15deg] md:-left-2 lg:flex  3xl:left-10;
   }
-
+  .feature-img2 {
+    @apply absolute top-[58%] z-10 hidden max-w-[1500px] rotate-[15deg] md:-left-2 lg:flex  3xl:left-10;
+  }
   /* Get App */
   .get-app {
     @apply max-container relative flex w-full  flex-col justify-between gap-32 
-    overflow-hidden px-6 py-12 text-white sm:flex-row sm:gap-12 sm:py-24 lg:px-20 
+    overflow-hidden px-6 py-12 text-white sm:flex-row sm:gap-12 sm:py-24 lg:px-10 
      2xl:rounded-5xl  bg-[#151d34];
   }
 
