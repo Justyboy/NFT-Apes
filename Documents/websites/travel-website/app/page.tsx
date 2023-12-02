@@ -11,9 +11,10 @@ export default function Home() {
    <>
    <Hero />
    <Features  />
+   <TextImage />
    <Card />
 
-   <TextImage />
+ 
 
 
      

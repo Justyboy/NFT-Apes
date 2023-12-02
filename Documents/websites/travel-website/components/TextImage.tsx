@@ -3,19 +3,20 @@ import Image from 'next/image'
 
 const features = [
   {
-    name: 'Push to deploy.',
+    name: '🌟 Test Preparation:',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
+      `"Whether it's standardized tests, exams, or quizzes, I offer comprehensive test preparation strategies.
+       Boost your confidence and performance through targeted test-taking techniques and practice."`,
 
   },
   {
-    name: 'SSL certificates.',
+    name: '🤓 Fun Learning Activities:',
     description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
     
   },
   {
-    name: 'Database backups.',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: '📊 Progress Tracking:',
+    description: 'Stay informed about your progress with regular updates and feedback. I believe in transparent communication to ensure you are on the right track and achieving your academic goals.',
   
   },
 ]
@@ -28,10 +29,9 @@ export default function Example() {
           <div className="lg:pr-8 lg:pt-4">
             <div className="lg:max-w-lg">
               <h2 className="text-base font-semibold leading-7 text-[#44b39d] ">Learn faster</h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl">A better workflow</p>
+              <p className="mt-2 text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl">Personalized tutoring tailored to every student's unique learning journey</p>
               <p className="mt-6 text-lg leading-8 text-gray-100">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque,
-                iste dolor cupiditate blanditiis ratione.
+              
               </p>
               <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-100 lg:max-w-none">
                 {features.map((feature) => (
@@ -49,7 +49,7 @@ export default function Example() {
           <Image  src="/teacherstudentcrop.jpeg" 
           alt="girl"   width={2432}
           height={942}
-          className="rounded-3xl" /> 
+          className="rounded-3xl max-h-[600px] w-[400px]" /> 
 
         </div>
       </div>

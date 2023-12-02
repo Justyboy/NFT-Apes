@@ -10,32 +10,32 @@ export const NAV_LINKS = [
 // FEATURES SECTION
 export const FEATURES = [
   {
-    title: 'Real maps can be offline',
+    title: 'Interactive Learning: ',
     icon: '/preview (1).jpg',
     variant: 'green',
     description:
-      'We provide a solution for you to be able to use our application when climbing, yes offline maps you can use at any time there is no signal at the location',
+      'Engage in dynamic, interactive sessions that go beyond textbooks. Learning should be enjoyable, and I strive to make each lesson both informative and fun.',
   },
   {
-    title: 'Set an adventure schedule',
+    title: 'Flexible Scheduling: ',
     icon: '/preview (2).jpg',
     variant: 'green',
     description:
-      "Schedule an adventure with friends. On holidays, there are many interesting offers from Hilink. That way, there's no more discussion",
+      "Life is busy, and I get that! Enjoy the flexibility of scheduling sessions that work best for you",
   },
   {
-    title: 'Technology using augment reality',
+    title: 'K-12 students 1:1 support',
     icon: '/preview (3).jpg',
     variant: 'green',
     description:
       'Technology uses augmented reality as a guide to your hiking trail in the forest to the top of the mountain. Already supported by the latest technology without an internet connection',
   },
   {
-    title: 'Many new locations every month',
+    title: 'Personalized Approach:',
     icon: '/preview (4).jpg',
     variant: 'orange',
     description:
-      'Lots of new locations every month, because we have a worldwide community of climbers who share their best experiences with climbing',
+      'No two students are the same, and neither are my lessons. I customize each session to meet your individual needs and learning pace.',
   },
 ];
 

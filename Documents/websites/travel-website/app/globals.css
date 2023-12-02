@@ -34,7 +34,9 @@ font-family: 'Titillium Web', sans-serif;
   .btn_dark_green_outline  { 
     @apply border-gray-20 bg-[#44b39d] px-8 py-5 text-white
   }
-  
+  .btn_dark  { 
+    @apply border-gray-900 bg-gray-900 px-8 py-5 text-white
+  }
   .max-container {
     @apply mx-auto max-w-[1440px];
   }

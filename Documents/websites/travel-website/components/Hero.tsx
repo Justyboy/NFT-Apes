@@ -53,7 +53,7 @@ className="absolute left-[-5px] top-[-60px] w-100 lf:w-[50px]"
 </div>
 
 <div className="relative flex flex-1">
-<div className="relative z-20 rounded-3xl flex flex-col gap-4 bg-white bg-cover md:w-[100%] w-[90%] h-[auto] mx-auto  py-4 pt-8 pb-30 lg:pb-20 px-4  ">
+<div className="relative z-20 rounded-3xl  shadow-2xl flex flex-col gap-4 bg-white bg-cover md:w-[100%] w-[90%] h-[auto] mx-auto  py-4 pt-8 pb-30 lg:pb-20 px-4  ">
   
 <div className="flex flex-col px-8">
   <div className="flexBetween hand-text">

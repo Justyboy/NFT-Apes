@@ -14,10 +14,10 @@ const Navbar = () => {
     <nav className="flex mx-auto justify-center items-center padding-container z-30 py-1 border-2 shadow-1 relative">
         <Link href="/">
     <Image 
-    src="/school-owl-book.jpg"
+    src="/logo.png"
      alt="logo" 
-     width={200} 
-     height={100} />
+     width={150} 
+     height={75} />
         </Link>
 
         <ul className="hidden h-full mx-auto gap-12 lg:flex">
@@ -32,7 +32,7 @@ const Navbar = () => {
           <Button  
           type="button"
           title="Book now"
-          variant="btn_dark_green"
+          variant="btn_dark"
           />
         </div>
 
